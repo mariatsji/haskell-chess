@@ -5,6 +5,8 @@ Piece(..),
 Position,
 Square,
 Board,
+Row,
+Col
 ) where
 
 
@@ -13,4 +15,6 @@ data Piece = Pawn Color | Knight Color | Bishop Color | Rook Color | Queen Color
 type Position = (Char, Int)
 type Square = (Position, Maybe Piece)
 type Board = [Square]
+type Row = [Square]
+type Col = [Square]
 

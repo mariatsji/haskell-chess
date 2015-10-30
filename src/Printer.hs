@@ -1,10 +1,12 @@
 --Pretty Printer
 
 module Printer (
-prettyPrint
+prettyPrint,
+prettyBoard
 ) where
 
 import Model
+import Data.List
 
 prettyPrint :: Square -> String
 prettyPrint (_, Nothing) = " "
@@ -21,6 +23,14 @@ prettyPrint (_, Just (Rook Black)) = "♜"
 prettyPrint (_, Just (Queen Black)) = "♛"
 prettyPrint (_, Just (King Black)) = "♚"
 
+prettyBoard :: Board -> String
+prettyBoard board =  intercalate " " $ map prettyRow (toRows board) 
 
+toRows :: Board -> [Row]
+toRows board = fmap (toRow board) $ reverse [1..8]
 
+toRow :: Board -> Int -> Row
+toRow board r = filter (\s -> snd (fst s) == r) board
 
+prettyRow :: Row -> String
+prettyRow squares = intercalate "" $ fmap prettyPrint squares
