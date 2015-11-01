@@ -24,7 +24,7 @@ prettyPrint (_, Just (Queen Black)) = "♛"
 prettyPrint (_, Just (King Black)) = "♚"
 
 prettyBoard :: Board -> String
-prettyBoard board =  intercalate " " $ map prettyRow (toRows board) 
+prettyBoard board =  intercalate "" $ map prettyRow (toRows board)
 
 toRows :: Board -> [Row]
 toRows board = fmap (toRow board) $ reverse [1..8]
@@ -33,4 +33,4 @@ toRow :: Board -> Int -> Row
 toRow board r = filter (\s -> snd (fst s) == r) board
 
 prettyRow :: Row -> String
-prettyRow squares = intercalate "" $ fmap prettyPrint squares
+prettyRow squares = (intercalate "" $ fmap prettyPrint squares) ++ "\n"

@@ -40,14 +40,14 @@ initBoard = land (Knight Black)('G',8) $
             land (Rook Black)('A',8) $
             land (Queen Black)('D',8) $
             land (King Black)('E',8) $
-            land (Pawn Black)('H',2) $
-            land (Pawn Black)('G',2) $
-            land (Pawn Black)('F',2) $
-            land (Pawn Black)('E',2) $
-            land (Pawn Black)('D',2) $
-            land (Pawn Black)('C',2) $
-            land (Pawn Black)('B',2) $
-            land (Pawn Black)('A',2) $
+            land (Pawn Black)('H',7) $
+            land (Pawn Black)('G',7) $
+            land (Pawn Black)('F',7) $
+            land (Pawn Black)('E',7) $
+            land (Pawn Black)('D',7) $
+            land (Pawn Black)('C',7) $
+            land (Pawn Black)('B',7) $
+            land (Pawn Black)('A',7) $
             land (Knight White)('G',1) $
             land (Knight White)('B',1) $
             land (Bishop White)('F',1) $
