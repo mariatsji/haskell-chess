@@ -27,10 +27,10 @@ prettyBoard :: Board -> String
 prettyBoard board =  intercalate "" $ map prettyRow (toRows board)
 
 toRows :: Board -> [Row]
-toRows board = fmap (toRow board) $ reverse [1..8]
+toRows board = map (toRow board) $ reverse [1..8]
 
 toRow :: Board -> Int -> Row
 toRow board r = filter (\s -> snd (fst s) == r) board
 
 prettyRow :: Row -> String
-prettyRow squares = (intercalate "" $ fmap prettyPrint squares) ++ "\n"
+prettyRow squares = intercalate "" (fmap prettyPrint squares) ++ "\n"
