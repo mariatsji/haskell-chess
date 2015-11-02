@@ -11,35 +11,42 @@ initBoard
 
 import Model
 import Data.Monoid
+import Data.List
 
 land :: Maybe Piece -> Position -> Board -> Board
 land piece pos board = before pos board ++ [(pos, piece)] ++ after pos board
     where before pos board = filter isBefore board
           after pos board = filter isAfter board
-          comp a b =  (col a) `compare` (col b) `mappend` ((row a) `compare` (row b))
           isBefore s = comp (position s) pos == LT
           isAfter s = comp (position s) pos == GT
+
+comp :: Position -> Position -> Ordering
+comp a b =  (col a) `compare` (col b) `mappend` ((row a) `compare` (row b))
+
+comp' :: Square -> Square -> Ordering
+comp' a b = comp (position a) (position b)
 
 without :: Position -> Board -> Board
 without pos board = land Nothing pos board
 
 move :: Position -> Position -> Board -> Board
-move from to board = land (pieceAt from board) to (without from board)
+move from to board = land (fst $ pieceAt from board) to (without from board)
 
-pieceAt :: Position -> Board -> Maybe Piece
-pieceAt pos board = Nothing --todo
+indexOf' :: Square -> Maybe Int
+indexOf' s = fmap (+ (((row (position s)) - 1) * 8)) (elemIndex (col (position s)) ['A'..'H'])
 
-row :: Position -> Int
-row pos = snd pos
+indexOf :: Square -> Int
+indexOf s = case (indexOf' s) of Nothing -> error "Col outside board!"
+                                 (Just i) -> i
 
-col :: Position -> Char
-col pos = fst pos
+pieceAt :: Position -> Board -> (Maybe Piece, Board)
+pieceAt pos board = (Nothing, board) --todo
 
-position :: Square -> Position
-position s = fst s
+sort :: Board -> Board
+sort board = sortBy comp' board
 
 emptyBoard :: Board
-emptyBoard = [((col, row), Nothing) | col <- ['A'..'H'], row <- [1..8]]
+emptyBoard = Engine.sort [((col, row), Nothing) | col <- ['A'..'H'], row <- [1..8]]
 
 initBoard = land (Just $ Knight Black)('G',8) $
             land (Just $ Knight Black)('B',8) $
