@@ -10,11 +10,10 @@ import Engine
 
 main :: IO ()
 main = putStr $ fromString $ prettyBoard $
-    move ('B',8) ('C',6) $
-    move ('G',1) ('F',3) $
-    move ('E',7) ('E',5) $
-    move ('E',2) ('E',4) initBoard
-    --putStr $ fromString $ prettyPrint (('A',2), Just (Pawn White))
-    --putStr $ fromString "♙"
+    last $
+    moveWithHistory ('B',8) ('C',6) $
+    moveWithHistory ('G',1) ('F',3) $ 
+    moveWithHistory ('E',7) ('E',5) $ 
+    moveWithHistory ('E',2) ('E',4) [initBoard]
 
 

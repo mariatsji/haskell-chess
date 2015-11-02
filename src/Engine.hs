@@ -8,7 +8,8 @@ position,
 emptyBoard,
 initBoard,
 pieceAt,
-move
+move,
+moveWithHistory
 ) where
 
 import Model
@@ -34,9 +35,13 @@ without = land Nothing
 move :: Position -> Position -> Board -> Board
 move from to board = land (fst $ pieceAt from board) to (without from board)
 
+moveWithHistory :: Position -> Position -> [Board] -> [Board]
+moveWithHistory from to history = history ++ [newHistory]
+    where newHistory = move from to $ last history
+
 pieceAt :: Position -> Board -> (Maybe Piece, Board)
 pieceAt pos board = (snd $ head $ filter rightsquare board, board)
-    where rightsquare s = fst s == pos
+    where rightsquare = (==) pos . fst
 
 sort :: Board -> Board
 sort = sortBy comp'
