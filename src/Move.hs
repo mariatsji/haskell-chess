@@ -1,6 +1,6 @@
 -- Moves and stuff
 
-module Engine (
+module Move (
 land,
 row,
 col,
@@ -47,7 +47,7 @@ sort :: Board -> Board
 sort = sortBy comp'
 
 emptyBoard :: Board
-emptyBoard = Engine.sort [((col, row), Nothing) | col <- ['A'..'H'], row <- [1..8]]
+emptyBoard = Move.sort [((col, row), Nothing) | col <- ['A'..'H'], row <- [1..8]]
 
 initBoard = land (Just $ Knight Black)('G',8) $
             land (Just $ Knight Black)('B',8) $

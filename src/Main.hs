@@ -6,7 +6,7 @@ import Data.ByteString.UTF8 (fromString)
 
 import Model
 import Printer
-import Engine
+import Move
 
 main :: IO ()
 main = putStr $ fromString $ prettyBoard $
