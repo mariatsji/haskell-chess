@@ -7,6 +7,7 @@ col,
 position,
 emptyBoard,
 initBoard,
+pieceAt,
 move
 ) where
 
@@ -33,15 +34,9 @@ without = land Nothing
 move :: Position -> Position -> Board -> Board
 move from to board = land (fst $ pieceAt from board) to (without from board)
 
-indexOf' :: Position -> Maybe Int
-indexOf' pos = fmap (+ ((row pos - 1) * 8)) (elemIndex (col pos) ['A'..'H'])
-
-indexOf :: Position -> Int
-indexOf pos = case indexOf' pos of Nothing -> error "Col outside board!"
-                                   (Just i) -> i
-
 pieceAt :: Position -> Board -> (Maybe Piece, Board)
-pieceAt pos board = (snd (board !! indexOf pos), board)
+pieceAt pos board = (snd $ head $ filter rightsquare board, board)
+    where rightsquare s = fst s == pos
 
 sort :: Board -> Board
 sort = sortBy comp'

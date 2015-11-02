@@ -9,7 +9,7 @@ import Model
 import Data.List
 
 prettyPrint :: Square -> String
-prettyPrint (_, Nothing) = " "
+prettyPrint (_, Nothing) = "   "
 prettyPrint (_, Just (Pawn White)) = "♙"
 prettyPrint (_, Just (Knight White)) = "♘"
 prettyPrint (_, Just (Bishop White)) = "♗"
