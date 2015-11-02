@@ -6,7 +6,8 @@ row,
 col,
 position,
 emptyBoard,
-initBoard
+initBoard,
+move
 ) where
 
 import Model
@@ -15,35 +16,35 @@ import Data.List
 
 land :: Maybe Piece -> Position -> Board -> Board
 land piece pos board = before pos board ++ [(pos, piece)] ++ after pos board
-    where before pos board = filter isBefore board
-          after pos board = filter isAfter board
+    where before s = filter isBefore
+          after s = filter isAfter
           isBefore s = comp (position s) pos == LT
           isAfter s = comp (position s) pos == GT
 
 comp :: Position -> Position -> Ordering
-comp a b =  (col a) `compare` (col b) `mappend` ((row a) `compare` (row b))
+comp a b =  col a `compare` col b `mappend` (row a `compare` row b)
 
 comp' :: Square -> Square -> Ordering
 comp' a b = comp (position a) (position b)
 
 without :: Position -> Board -> Board
-without pos board = land Nothing pos board
+without = land Nothing
 
 move :: Position -> Position -> Board -> Board
 move from to board = land (fst $ pieceAt from board) to (without from board)
 
-indexOf' :: Square -> Maybe Int
-indexOf' s = fmap (+ (((row (position s)) - 1) * 8)) (elemIndex (col (position s)) ['A'..'H'])
+indexOf' :: Position -> Maybe Int
+indexOf' pos = fmap (+ ((row pos - 1) * 8)) (elemIndex (col pos) ['A'..'H'])
 
-indexOf :: Square -> Int
-indexOf s = case (indexOf' s) of Nothing -> error "Col outside board!"
-                                 (Just i) -> i
+indexOf :: Position -> Int
+indexOf pos = case indexOf' pos of Nothing -> error "Col outside board!"
+                                   (Just i) -> i
 
 pieceAt :: Position -> Board -> (Maybe Piece, Board)
-pieceAt pos board = (Nothing, board) --todo
+pieceAt pos board = (snd (board !! indexOf pos), board)
 
 sort :: Board -> Board
-sort board = sortBy comp' board
+sort = sortBy comp'
 
 emptyBoard :: Board
 emptyBoard = Engine.sort [((col, row), Nothing) | col <- ['A'..'H'], row <- [1..8]]
