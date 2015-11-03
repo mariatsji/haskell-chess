@@ -23,10 +23,10 @@ type Row = [Square]
 type Col = [Square]
 
 row :: Position -> Int
-row pos = snd pos
+row = snd
 
 col :: Position -> Char
 col pos = toUpper $ fst pos
 
 position :: Square -> Position
-position s = fst s
+position = fst
