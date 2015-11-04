@@ -17,9 +17,15 @@ import Model
 import Data.Monoid
 import Data.List
 
+nextBlackMoves :: [Board] -> [Board]
+nextBlackMoves boards = nextBlackPawnMoves boards
+
+nextBlackPawnMoves :: [Board] -> [Board]
+nextBlackPawnMoves boards = boards
+
 isLegal :: [Board] -> Bool
 isLegal [] = False
-isLegal (b:bs) = oneKingEach b --todo
+isLegal (b:bs) = oneKingEach b
 
 oneKingEach :: Board -> Bool
 oneKingEach b = not ( null $ findPiece (King White) b) &&
