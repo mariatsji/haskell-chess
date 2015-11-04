@@ -9,12 +9,23 @@ emptyBoard,
 initBoard,
 pieceAt,
 move,
-moveWithHistory
+moveWithHistory,
+isLegal
 ) where
 
 import Model
 import Data.Monoid
 import Data.List
+
+isLegal :: [Board] -> Bool
+isLegal [] = False
+isLegal (b:bs) = oneKingEach b --todo
+
+oneKingEach :: Board -> Bool
+oneKingEach b = True --todo
+
+findPiece :: Piece -> Board -> (Maybe Square, Board)
+findPiece p b = (Nothing, b)
 
 land :: Maybe Piece -> Position -> Board -> Board
 land piece pos board = before pos board ++ [(pos, piece)] ++ after pos board
