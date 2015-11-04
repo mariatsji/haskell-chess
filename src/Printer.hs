@@ -23,6 +23,7 @@ prettyPrint (_, Just (Rook Black)) = "♜"
 prettyPrint (_, Just (Queen Black)) = "♛"
 prettyPrint (_, Just (King Black)) = "♚"
 
+
 prettyBoard :: Board -> String
 prettyBoard board =  intercalate "" $ map prettyRow (toRows board)
 
