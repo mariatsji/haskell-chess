@@ -21,3 +21,4 @@ main :: IO ()
 main = do
     putStr $ fromString $ prettyBoard $ last setup
     print $ evaluate $ last setup
+    print $ isLegal setup

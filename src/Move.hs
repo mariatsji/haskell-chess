@@ -22,10 +22,14 @@ isLegal [] = False
 isLegal (b:bs) = oneKingEach b --todo
 
 oneKingEach :: Board -> Bool
-oneKingEach b = True --todo
+oneKingEach b = not ( null $ findPiece (King White) b) &&
+    not (null $ findPiece (King Black) b)
 
-findPiece :: Piece -> Board -> (Maybe Square, Board)
-findPiece p b = (Nothing, b)
+findPiece :: Piece -> Board -> [Square]
+findPiece piece = filter (`hasPiece` piece)
+
+hasPiece :: Square -> Piece -> Bool
+hasPiece s p = snd s == Just p
 
 land :: Maybe Piece -> Position -> Board -> Board
 land piece pos board = before pos board ++ [(pos, piece)] ++ after pos board
