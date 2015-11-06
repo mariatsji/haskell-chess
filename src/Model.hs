@@ -10,10 +10,15 @@ Row,
 Col,
 row,
 col,
-position
+position,
+insideBoard,
+colAdd,
+rowAdd,
+isBlackSquare
 ) where
 
 import Data.Char
+import Data.List
 
 data Color = White | Black deriving (Eq,Show,Ord,Read,Enum,Bounded)
 data PType = Pawn | Knight | Bishop | Rook | Queen | King deriving (Eq,Show,Ord,Read,Enum,Bounded)
@@ -33,3 +38,18 @@ col pos = toUpper $ fst pos
 position :: Square -> Position
 position = fst
 
+insideBoard :: Position -> Bool
+insideBoard (col,row) = col `elem` ['A' .. 'H'] && row `elem` [1 .. 8]
+
+colAdd :: Position -> Int -> Char
+colAdd pos c = chr (ord (col pos) + c)
+
+rowAdd :: Position -> Int -> Int
+rowAdd pos r = (row pos) + r
+
+isBlackSquare :: Position -> Bool
+isBlackSquare (c,r) = even $ toIntCol c + r
+
+toIntCol :: Char -> Int
+toIntCol c = case (elemIndex c ['A' .. 'H']) of Just i -> i
+                                                Nothing -> 0

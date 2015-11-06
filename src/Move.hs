@@ -5,42 +5,23 @@ land,
 row,
 col,
 position,
-emptyBoard,
-initBoard,
 pieceAt,
 move,
 moveWithHistory,
-isLegal,
-knightPosFrom
+isLegal
 ) where
 
 import Model
 import Data.Monoid
 import Data.List
 import Data.Char
+import KnightMove
 
 positionsFrom :: Square -> Board -> [Position]
 positionsFrom (position, Just (Piece Knight _)) board = knightPosFrom position board
 
-knightPosFrom :: Position -> Board -> [Position]
-knightPosFrom pos board = [(newCol,newRow) |
-    a <- [-1,1,-2,2],
-    b <- [-1,1,-2,2],
-    let (newCol,newRow) = (colAdd pos a, rowAdd pos b),
-    abs a /= abs b,
-    insideBoard (newCol,newRow)]
-
-insideBoard :: Position -> Bool
-insideBoard (col,row) = col `elem` ['A' .. 'H'] && row `elem` [1 .. 8]
-
 notOwnPieceOn :: Position -> Color -> Board -> Bool
 notOwnPieceOn pos color board = False -- todo
-
-colAdd :: Position -> Int -> Char
-colAdd pos c = chr (ord (col pos) + c)
-
-rowAdd :: Position -> Int -> Int
-rowAdd pos r = (row pos) + r
 
 isLegal :: [Board] -> Bool
 isLegal [] = False
@@ -85,43 +66,4 @@ pieceAt pos board = (snd $ head $ filter rightsquare board, board)
 
 sort :: Board -> Board
 sort = sortBy comp'
-
-emptyBoard :: Board
-emptyBoard = Move.sort [((col, row), Nothing) | col <- ['A'..'H'], row <- [1..8]]
-
-initBoard = land (Just $ Piece Knight Black)('G',8) $
-            land (Just $ Piece Knight Black)('B',8) $
-            land (Just $ Piece Bishop Black)('F',8) $
-            land (Just $ Piece Bishop Black)('C',8) $
-            land (Just $ Piece Rook Black)('H',8) $
-            land (Just $ Piece Rook Black)('A',8) $
-            land (Just $ Piece Queen Black)('D',8) $
-            land (Just $ Piece King Black)('E',8) $
-            land (Just $ Piece Pawn Black)('H',7) $
-            land (Just $ Piece Pawn Black)('G',7) $
-            land (Just $ Piece Pawn Black)('F',7) $
-            land (Just $ Piece Pawn Black)('E',7) $
-            land (Just $ Piece Pawn Black)('D',7) $
-            land (Just $ Piece Pawn Black)('C',7) $
-            land (Just $ Piece Pawn Black)('B',7) $
-            land (Just $ Piece Pawn Black)('A',7) $
-            land (Just $ Piece Knight White)('G',1) $
-            land (Just $ Piece Knight White)('B',1) $
-            land (Just $ Piece Bishop White)('F',1) $
-            land (Just $ Piece Bishop White)('C',1) $
-            land (Just $ Piece Rook White)('H',1) $
-            land (Just $ Piece Rook White)('A',1) $
-            land (Just $ Piece Queen White)('D',1) $
-            land (Just $ Piece King White)('E',1) $
-            land (Just $ Piece Pawn White)('H',2) $
-            land (Just $ Piece Pawn White)('G',2) $
-            land (Just $ Piece Pawn White)('F',2) $
-            land (Just $ Piece Pawn White)('E',2) $
-            land (Just $ Piece Pawn White)('D',2) $
-            land (Just $ Piece Pawn White)('C',2) $
-            land (Just $ Piece Pawn White)('B',2) $
-            land (Just $ Piece Pawn White)('A',2) emptyBoard
-
-
-
 

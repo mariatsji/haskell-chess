@@ -7,7 +7,10 @@ import Data.ByteString.UTF8 (fromString)
 import Model
 import Printer
 import Move
+import KnightMove
 import Evaluation
+import Board
+
 
 setup =
     moveWithHistory ('E',5) ('D',4) $ -- takes
