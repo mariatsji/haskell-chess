@@ -23,7 +23,18 @@ positionsFrom :: Square -> Board -> [Position]
 positionsFrom (position, Just (Knight _)) board = knightPosFrom position board
 
 knightPosFrom :: Position -> Board -> [Position]
-knightPosFrom pos board = [(colAdd pos a,rowAdd pos b) | a <- [-1,1,-2,2], b <- [-1,1,-2,2], abs a /= abs b]
+knightPosFrom pos board = [(newCol,newRow) |
+    a <- [-1,1,-2,2],
+    b <- [-1,1,-2,2],
+    let (newCol,newRow) = (colAdd pos a, rowAdd pos b),
+    abs a /= abs b,
+    insideBoard (newCol,newRow)]
+
+insideBoard :: Position -> Bool
+insideBoard (col,row) = col `elem` ['A' .. 'H'] && row `elem` [1 .. 8]
+
+notOwnPieceOn :: Position -> Color -> Board -> Bool
+notOwnPieceOn pos color board = False -- todo
 
 colAdd :: Position -> Int -> Char
 colAdd pos c = chr (ord (col pos) + c)
