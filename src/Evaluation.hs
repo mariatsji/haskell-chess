@@ -12,17 +12,17 @@ weight board = sum $ map toValue board
 
 toValue :: Square -> Float
 toValue s = case s of (_, Nothing) -> 0.0
-                      (_, Just (Pawn White)) -> 1.0
-                      (_, Just (Knight White)) -> 3.0
-                      (_, Just (Bishop White)) -> 3.0
-                      (_, Just (Rook White)) -> 5.0
-                      (_, Just (Queen White)) -> 9.0
-                      (_, Just (King White)) -> 50.0
-                      (_, Just (Pawn Black)) -> -1.0
-                      (_, Just (Knight Black)) -> -3.0
-                      (_, Just (Bishop Black)) -> -3.0
-                      (_, Just (Rook Black)) -> -5.0
-                      (_, Just (Queen Black)) -> -9.0
-                      (_, Just (King Black)) -> -50.0
+                      (_, Just (Piece Pawn White)) -> 1.0
+                      (_, Just (Piece Knight White)) -> 3.0
+                      (_, Just (Piece Bishop White)) -> 3.0
+                      (_, Just (Piece Rook White)) -> 5.0
+                      (_, Just (Piece Queen White)) -> 9.0
+                      (_, Just (Piece King White)) -> 50.0
+                      (_, Just (Piece Pawn Black)) -> -1.0
+                      (_, Just (Piece Knight Black)) -> -3.0
+                      (_, Just (Piece Bishop Black)) -> -3.0
+                      (_, Just (Piece Rook Black)) -> -5.0
+                      (_, Just (Piece Queen Black)) -> -9.0
+                      (_, Just (Piece King Black)) -> -50.0
 
 

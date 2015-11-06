@@ -10,18 +10,18 @@ import Data.List
 
 prettyPrint :: Square -> String
 prettyPrint (_, Nothing) = "   "
-prettyPrint (_, Just (Pawn White)) = "♙"
-prettyPrint (_, Just (Knight White)) = "♘"
-prettyPrint (_, Just (Bishop White)) = "♗"
-prettyPrint (_, Just (Rook White)) = "♖"
-prettyPrint (_, Just (Queen White)) = "♕"
-prettyPrint (_, Just (King White)) = "♔"
-prettyPrint (_, Just (Pawn Black)) = "♟"
-prettyPrint (_, Just (Knight Black)) = "♞"
-prettyPrint (_, Just (Bishop Black)) = "♝"
-prettyPrint (_, Just (Rook Black)) = "♜"
-prettyPrint (_, Just (Queen Black)) = "♛"
-prettyPrint (_, Just (King Black)) = "♚"
+prettyPrint (_, Just (Piece Pawn White)) = "♙"
+prettyPrint (_, Just (Piece Knight White)) = "♘"
+prettyPrint (_, Just (Piece Bishop White)) = "♗"
+prettyPrint (_, Just (Piece Rook White)) = "♖"
+prettyPrint (_, Just (Piece Queen White)) = "♕"
+prettyPrint (_, Just (Piece King White)) = "♔"
+prettyPrint (_, Just (Piece Pawn Black)) = "♟"
+prettyPrint (_, Just (Piece Knight Black)) = "♞"
+prettyPrint (_, Just (Piece Bishop Black)) = "♝"
+prettyPrint (_, Just (Piece Rook Black)) = "♜"
+prettyPrint (_, Just (Piece Queen Black)) = "♛"
+prettyPrint (_, Just (Piece King Black)) = "♚"
 
 
 prettyBoard :: Board -> String

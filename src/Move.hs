@@ -20,7 +20,7 @@ import Data.List
 import Data.Char
 
 positionsFrom :: Square -> Board -> [Position]
-positionsFrom (position, Just (Knight _)) board = knightPosFrom position board
+positionsFrom (position, Just (Piece Knight _)) board = knightPosFrom position board
 
 knightPosFrom :: Position -> Board -> [Position]
 knightPosFrom pos board = [(newCol,newRow) |
@@ -47,8 +47,8 @@ isLegal [] = False
 isLegal (b:bs) = oneKingEach b
 
 oneKingEach :: Board -> Bool
-oneKingEach b = not ( null $ findPiece (King White) b) &&
-    not (null $ findPiece (King Black) b)
+oneKingEach b = not ( null $ findPiece (Piece King White) b) &&
+    not (null $ findPiece (Piece King Black) b)
 
 findPiece :: Piece -> Board -> [Square]
 findPiece piece = filter (`hasPiece` piece)
@@ -89,38 +89,38 @@ sort = sortBy comp'
 emptyBoard :: Board
 emptyBoard = Move.sort [((col, row), Nothing) | col <- ['A'..'H'], row <- [1..8]]
 
-initBoard = land (Just $ Knight Black)('G',8) $
-            land (Just $ Knight Black)('B',8) $
-            land (Just $ Bishop Black)('F',8) $
-            land (Just $ Bishop Black)('C',8) $
-            land (Just $ Rook Black)('H',8) $
-            land (Just $ Rook Black)('A',8) $
-            land (Just $ Queen Black)('D',8) $
-            land (Just $ King Black)('E',8) $
-            land (Just $ Pawn Black)('H',7) $
-            land (Just $ Pawn Black)('G',7) $
-            land (Just $ Pawn Black)('F',7) $
-            land (Just $ Pawn Black)('E',7) $
-            land (Just $ Pawn Black)('D',7) $
-            land (Just $ Pawn Black)('C',7) $
-            land (Just $ Pawn Black)('B',7) $
-            land (Just $ Pawn Black)('A',7) $
-            land (Just $ Knight White)('G',1) $
-            land (Just $ Knight White)('B',1) $
-            land (Just $ Bishop White)('F',1) $
-            land (Just $ Bishop White)('C',1) $
-            land (Just $ Rook White)('H',1) $
-            land (Just $ Rook White)('A',1) $
-            land (Just $ Queen White)('D',1) $
-            land (Just $ King White)('E',1) $
-            land (Just $ Pawn White)('H',2) $
-            land (Just $ Pawn White)('G',2) $
-            land (Just $ Pawn White)('F',2) $
-            land (Just $ Pawn White)('E',2) $
-            land (Just $ Pawn White)('D',2) $
-            land (Just $ Pawn White)('C',2) $
-            land (Just $ Pawn White)('B',2) $
-            land (Just $ Pawn White)('A',2) emptyBoard
+initBoard = land (Just $ Piece Knight Black)('G',8) $
+            land (Just $ Piece Knight Black)('B',8) $
+            land (Just $ Piece Bishop Black)('F',8) $
+            land (Just $ Piece Bishop Black)('C',8) $
+            land (Just $ Piece Rook Black)('H',8) $
+            land (Just $ Piece Rook Black)('A',8) $
+            land (Just $ Piece Queen Black)('D',8) $
+            land (Just $ Piece King Black)('E',8) $
+            land (Just $ Piece Pawn Black)('H',7) $
+            land (Just $ Piece Pawn Black)('G',7) $
+            land (Just $ Piece Pawn Black)('F',7) $
+            land (Just $ Piece Pawn Black)('E',7) $
+            land (Just $ Piece Pawn Black)('D',7) $
+            land (Just $ Piece Pawn Black)('C',7) $
+            land (Just $ Piece Pawn Black)('B',7) $
+            land (Just $ Piece Pawn Black)('A',7) $
+            land (Just $ Piece Knight White)('G',1) $
+            land (Just $ Piece Knight White)('B',1) $
+            land (Just $ Piece Bishop White)('F',1) $
+            land (Just $ Piece Bishop White)('C',1) $
+            land (Just $ Piece Rook White)('H',1) $
+            land (Just $ Piece Rook White)('A',1) $
+            land (Just $ Piece Queen White)('D',1) $
+            land (Just $ Piece King White)('E',1) $
+            land (Just $ Piece Pawn White)('H',2) $
+            land (Just $ Piece Pawn White)('G',2) $
+            land (Just $ Piece Pawn White)('F',2) $
+            land (Just $ Piece Pawn White)('E',2) $
+            land (Just $ Piece Pawn White)('D',2) $
+            land (Just $ Piece Pawn White)('C',2) $
+            land (Just $ Piece Pawn White)('B',2) $
+            land (Just $ Piece Pawn White)('A',2) emptyBoard
 
 
 

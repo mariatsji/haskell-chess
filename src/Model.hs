@@ -2,6 +2,7 @@
 module Model (
 Color(..),
 Piece(..),
+PType(..),
 Position,
 Square,
 Board,
@@ -15,7 +16,8 @@ position
 import Data.Char
 
 data Color = White | Black deriving (Eq,Show,Ord,Read,Enum,Bounded)
-data Piece = Pawn Color | Knight Color | Bishop Color | Rook Color | Queen Color | King Color deriving (Eq,Show,Ord,Read)
+data PType = Pawn | Knight | Bishop | Rook | Queen | King deriving (Eq,Show,Ord,Read,Enum,Bounded)
+data Piece =  Piece { pType :: PType, pColor :: Color} deriving (Eq,Show,Ord,Read,Bounded)
 type Position = (Char, Int)
 type Square = (Position, Maybe Piece)
 type Board = [Square]
@@ -30,3 +32,4 @@ col pos = toUpper $ fst pos
 
 position :: Square -> Position
 position = fst
+
