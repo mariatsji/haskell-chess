@@ -12,4 +12,3 @@ knightPosFrom pos board = [(newCol,newRow) |
     let (newCol,newRow) = (colAdd pos a, rowAdd pos b),
     abs a /= abs b,
     insideBoard (newCol,newRow)]
-

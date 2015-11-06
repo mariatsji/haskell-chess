@@ -19,6 +19,7 @@ isBlackSquare
 
 import Data.Char
 import Data.List
+import Data.Maybe
 
 data Color = White | Black deriving (Eq,Show,Ord,Read,Enum,Bounded)
 data PType = Pawn | Knight | Bishop | Rook | Queen | King deriving (Eq,Show,Ord,Read,Enum,Bounded)
@@ -45,11 +46,10 @@ colAdd :: Position -> Int -> Char
 colAdd pos c = chr (ord (col pos) + c)
 
 rowAdd :: Position -> Int -> Int
-rowAdd pos r = (row pos) + r
+rowAdd pos r = row pos + r
 
 isBlackSquare :: Position -> Bool
 isBlackSquare (c,r) = even $ toIntCol c + r
 
 toIntCol :: Char -> Int
-toIntCol c = case (elemIndex c ['A' .. 'H']) of Just i -> i
-                                                Nothing -> 0
+toIntCol c = fromMaybe 0 $ elemIndex c ['A' .. 'H']

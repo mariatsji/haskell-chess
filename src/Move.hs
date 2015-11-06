@@ -18,7 +18,7 @@ import Data.Char
 import KnightMove
 
 positionsFrom :: Square -> Board -> [Position]
-positionsFrom (position, Just (Piece Knight _)) board = knightPosFrom position board
+positionsFrom (position, Just (Piece Knight _)) = knightPosFrom position
 
 notOwnPieceOn :: Position -> Color -> Board -> Bool
 notOwnPieceOn pos color board = False -- todo
