@@ -10,18 +10,26 @@ initBoard,
 pieceAt,
 move,
 moveWithHistory,
-isLegal
+isLegal,
+knightPosFrom
 ) where
 
 import Model
 import Data.Monoid
 import Data.List
+import Data.Char
 
-nextBlackMoves :: [Board] -> [Board]
-nextBlackMoves boards = nextBlackPawnMoves boards
+positionsFrom :: Square -> Board -> [Position]
+positionsFrom (position, Just (Knight _)) board = knightPosFrom position board
 
-nextBlackPawnMoves :: [Board] -> [Board]
-nextBlackPawnMoves boards = boards
+knightPosFrom :: Position -> Board -> [Position]
+knightPosFrom pos board = [(colAdd pos a,rowAdd pos b) | a <- [-1,1,-2,2], b <- [-1,1,-2,2], abs a /= abs b]
+
+colAdd :: Position -> Int -> Char
+colAdd pos c = chr (ord (col pos) + c)
+
+rowAdd :: Position -> Int -> Int
+rowAdd pos r = (row pos) + r
 
 isLegal :: [Board] -> Bool
 isLegal [] = False
