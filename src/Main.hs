@@ -25,4 +25,4 @@ main = do
     putStr $ fromString $ prettyBoard $ last setup
     print $ evaluate $ last setup
     print $ isLegal setup
-    print $ knightPosFrom ('G',1) initBoard
+    print $ knightPosFrom ('G',1) (Piece Knight White) initBoard

@@ -53,3 +53,5 @@ isBlackSquare (c,r) = even $ toIntCol c + r
 
 toIntCol :: Char -> Int
 toIntCol c = fromMaybe 0 $ elemIndex c ['A' .. 'H']
+
+

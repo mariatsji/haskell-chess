@@ -8,6 +8,7 @@ position,
 pieceAt,
 move,
 moveWithHistory,
+positionsFrom,
 isLegal
 ) where
 
@@ -15,10 +16,18 @@ import Model
 import Data.Monoid
 import Data.List
 import Data.Char
+import Data.Maybe
 import KnightMove
 
+-- todo moves (filters islegal and maps all possible positionsFrom using move-function on all squares)
+-- moves :: Board -> Color -> [Board]
+
 positionsFrom :: Square -> Board -> [Position]
-positionsFrom (position, Just (Piece Knight _)) = knightPosFrom position
+positionsFrom (p,mp) b = case mp of Nothing -> []
+                                    Just piece -> positionsFrom' p piece b
+
+positionsFrom' :: Position -> Piece -> Board -> [Position]
+positionsFrom' position piece board = filter insideBoard $ case piece of Piece Knight _ -> knightPosFrom position piece board
 
 notOwnPieceOn :: Position -> Color -> Board -> Bool
 notOwnPieceOn pos color board = False -- todo
@@ -67,3 +76,5 @@ pieceAt pos board = (snd $ head $ filter rightsquare board, board)
 sort :: Board -> Board
 sort = sortBy comp'
 
+occupied :: Position -> Piece -> Board -> Bool
+occupied pos pi board = Just (pColor pi) == fmap pColor ( fst $ pieceAt pos board)
