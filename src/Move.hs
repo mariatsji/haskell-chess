@@ -19,6 +19,7 @@ import Data.List
 import Data.Char
 import Data.Maybe
 import KnightMove
+import PawnMove
 
 moves :: Board -> Color -> [Board]
 moves board color = [move (position square) toPos board |
@@ -33,6 +34,7 @@ positionsFrom (p,mp) b = case mp of Nothing -> []
 positionsFrom' :: Position -> Piece -> Board -> [Position]
 positionsFrom' position piece board =
     filter insideBoard $ case piece of Piece Knight _ -> knightPosFrom position piece board
+                                       Piece Pawn _ -> pawnPosFrom position piece board
                                        otherwise -> []
 
 isLegal :: Board -> Bool
