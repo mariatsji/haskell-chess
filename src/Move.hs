@@ -20,10 +20,9 @@ import Data.Char
 import Data.Maybe
 import KnightMove
 
--- todo moves (filters isLegal and maps all possible positionsFrom using move-function on all squares)
 moves :: Board -> Color -> [Board]
 moves board color = [move (position square) toPos board |
-    square <- board,
+    square <- filter (hasColoredP color) board,
     toPos <- positionsFrom square board,
     isLegal board]
 
