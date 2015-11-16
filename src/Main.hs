@@ -20,9 +20,18 @@ setup =
     moveWithHistory ('E',7) ('E',5) $ 
     moveWithHistory ('E',2) ('E',4) [initBoard]
 
+nicePrint :: Board -> IO ()
+nicePrint board = do
+    putStr $ fromString $ prettyBoard board
+    putStrLn " "
+
 main :: IO ()
 main = do
-    putStr $ fromString $ prettyBoard $ last setup
-    print $ evaluate $ last setup
-    print $ isLegal setup
-    print $ knightPosFrom ('G',1) (Piece Knight White) initBoard
+    nicePrint $ last setup
+    --putStr $ fromString $ prettyBoard $ last setup
+    --print $ evaluate $ last setup
+    --print $ isLegal $ head setup
+    -- print $ knightPosFrom ('G',1) (Piece Knight White) initBoard
+    print $ length $ moves (last setup) White
+    mapM_ nicePrint $ moves (last setup) White
+

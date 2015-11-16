@@ -14,7 +14,8 @@ position,
 insideBoard,
 colAdd,
 rowAdd,
-isBlackSquare
+isBlackSquare,
+colorsSquare
 ) where
 
 import Data.Char
@@ -54,4 +55,9 @@ isBlackSquare (c,r) = even $ toIntCol c + r
 toIntCol :: Char -> Int
 toIntCol c = fromMaybe 0 $ elemIndex c ['A' .. 'H']
 
+-- all squares with white or black pieces
+colorsSquare :: Board -> Color -> [Square]
+colorsSquare squares c = squares
 
+hasColoredP :: Square -> Color -> Bool
+hasColoredP s c = (Just pColor <*> snd s) == Just c

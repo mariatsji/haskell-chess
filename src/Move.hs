@@ -7,6 +7,7 @@ col,
 position,
 pieceAt,
 move,
+moves,
 moveWithHistory,
 positionsFrom,
 isLegal
@@ -19,22 +20,24 @@ import Data.Char
 import Data.Maybe
 import KnightMove
 
--- todo moves (filters islegal and maps all possible positionsFrom using move-function on all squares)
--- moves :: Board -> Color -> [Board]
+-- todo moves (filters isLegal and maps all possible positionsFrom using move-function on all squares)
+moves :: Board -> Color -> [Board]
+moves board color = [move (position square) toPos board |
+    square <- board,
+    toPos <- positionsFrom square board,
+    isLegal board]
 
 positionsFrom :: Square -> Board -> [Position]
 positionsFrom (p,mp) b = case mp of Nothing -> []
                                     Just piece -> positionsFrom' p piece b
 
 positionsFrom' :: Position -> Piece -> Board -> [Position]
-positionsFrom' position piece board = filter insideBoard $ case piece of Piece Knight _ -> knightPosFrom position piece board
+positionsFrom' position piece board =
+    filter insideBoard $ case piece of Piece Knight _ -> knightPosFrom position piece board
+                                       otherwise -> []
 
-notOwnPieceOn :: Position -> Color -> Board -> Bool
-notOwnPieceOn pos color board = False -- todo
-
-isLegal :: [Board] -> Bool
-isLegal [] = False
-isLegal (b:bs) = oneKingEach b
+isLegal :: Board -> Bool
+isLegal = oneKingEach
 
 oneKingEach :: Board -> Bool
 oneKingEach b = not ( null $ findPiece (Piece King White) b) &&
@@ -48,8 +51,8 @@ hasPiece s p = snd s == Just p
 
 land :: Maybe Piece -> Position -> Board -> Board
 land piece pos board = before pos board ++ [(pos, piece)] ++ after pos board
-    where before s = filter isBefore
-          after s = filter isAfter
+    where before x = filter isBefore
+          after y = filter isAfter
           isBefore s = comp (position s) pos == LT
           isAfter s = comp (position s) pos == GT
 
