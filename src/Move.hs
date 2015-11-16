@@ -25,7 +25,10 @@ moves :: Board -> Color -> [Board]
 moves board color = [move (position square) toPos board |
     square <- filter (hasColoredP color) board,
     toPos <- positionsFrom square board,
-    isLegal board]
+    isLegal board,
+    notOccupied color toPos board]
+
+notOccupied color pos board = not $ hasColoredP color $ squareAt pos board
 
 positionsFrom :: Square -> Board -> [Position]
 positionsFrom (p,mp) b = case mp of Nothing -> []
@@ -79,6 +82,3 @@ pieceAt pos board = (snd $ head $ filter rightsquare board, board)
 
 sort :: Board -> Board
 sort = sortBy comp'
-
-occupied :: Position -> Piece -> Board -> Bool
-occupied pos pi board = Just (pColor pi) == fmap pColor ( fst $ pieceAt pos board)

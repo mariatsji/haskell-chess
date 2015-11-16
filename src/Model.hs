@@ -15,7 +15,8 @@ insideBoard,
 colAdd,
 rowAdd,
 isBlackSquare,
-hasColoredP
+hasColoredP,
+squareAt
 ) where
 
 import Data.Char
@@ -56,4 +57,8 @@ toIntCol :: Char -> Int
 toIntCol c = fromMaybe 0 $ elemIndex c ['A' .. 'H']
 
 hasColoredP :: Color -> Square -> Bool
-hasColoredP c s = (Just pColor <*> snd s) == Just c
+hasColoredP c s = case fmap (\p -> pColor p == c) (snd s) of Just True -> True
+                                                             otherwise -> False
+squareAt :: Position -> Board -> Square
+squareAt pos board = head $ filter (\s -> position s == pos) board
+
