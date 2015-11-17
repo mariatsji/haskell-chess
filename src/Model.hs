@@ -14,9 +14,13 @@ position,
 insideBoard,
 colAdd,
 rowAdd,
+invertC,
 isBlackSquare,
 hasColoredP,
-squareAt
+squareAt,
+hasOpponentOn,
+notOccupied,
+pieceAt
 ) where
 
 import Data.Char
@@ -37,6 +41,9 @@ row = snd
 
 col :: Position -> Char
 col pos = toUpper $ fst pos
+
+invertC :: Color -> Color
+invertC c = if c == White then Black else White
 
 position :: Square -> Position
 position = fst
@@ -59,6 +66,19 @@ toIntCol c = fromMaybe 0 $ elemIndex c ['A' .. 'H']
 hasColoredP :: Color -> Square -> Bool
 hasColoredP c s = case fmap (\p -> pColor p == c) (snd s) of Just True -> True
                                                              otherwise -> False
+
 squareAt :: Position -> Board -> Square
 squareAt pos board = head $ filter (\s -> position s == pos) board
 
+notOccupied :: Color -> Position -> Board -> Bool
+notOccupied color pos board = not $ hasColoredP color $ squareAt pos board
+
+hasOpponentOn :: Color -> Board -> Position -> Bool
+hasOpponentOn myColor board pos = case fmap pColor $ fst $ pieceAt pos board of
+    Just opponentColor -> True
+    otherwise -> False
+      where opponentColor = invertC myColor
+
+pieceAt :: Position -> Board -> (Maybe Piece, Board)
+pieceAt pos board = (snd $ head $ filter rightsquare board, board)
+    where rightsquare = (==) pos . fst

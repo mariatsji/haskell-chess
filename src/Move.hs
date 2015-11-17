@@ -28,8 +28,6 @@ moves board color = [move (position square) toPos board |
     isLegal board,
     notOccupied color toPos board]
 
-notOccupied color pos board = not $ hasColoredP color $ squareAt pos board
-
 positionsFrom :: Square -> Board -> [Position]
 positionsFrom (p,mp) b = case mp of Nothing -> []
                                     Just piece -> positionsFrom' p piece b
@@ -75,10 +73,6 @@ move from to board = land (fst $ pieceAt from board) to (without from board)
 moveWithHistory :: Position -> Position -> [Board] -> [Board]
 moveWithHistory from to history = history ++ [newHistory]
     where newHistory = move from to $ last history
-
-pieceAt :: Position -> Board -> (Maybe Piece, Board)
-pieceAt pos board = (snd $ head $ filter rightsquare board, board)
-    where rightsquare = (==) pos . fst
 
 sort :: Board -> Board
 sort = sortBy comp'
