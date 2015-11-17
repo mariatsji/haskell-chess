@@ -11,12 +11,21 @@ pawnPosFrom pos piece board = oneMovePawn pos piece board ++
     takesRight pos piece board
 
 oneMovePawn :: Position -> Piece -> Board -> [Position]
-oneMovePawn pos piece board
-    | pColor piece == White = [(col pos, rowAdd pos 1)]
-    | pColor piece == Black = [(col pos, rowAdd pos (-1))]
+oneMovePawn pos piece board = filter (vacant board) [oneMovePawn' pos piece board]
 
-twoMovesPawn :: Position -> Piece -> Board -> [Position]
-twoMovesPawn pos piece board
+twoMovesPawn :: Position -> Piece -> Board -> [Position] -- should be a Maybe
+twoMovesPawn pos piece board = case oneMovePawn pos piece board of --hacky fix of jumping over own pieces
+    ([]) -> []
+    otherwise -> filter (vacant board) (twoMovesPawn' pos piece board)
+
+oneMovePawn' :: Position -> Piece -> Board -> Position
+oneMovePawn' pos piece board
+    | pColor piece == White = (col pos, rowAdd pos 1)
+    | otherwise = (col pos, rowAdd pos (-1))
+
+
+twoMovesPawn' :: Position -> Piece -> Board -> [Position]
+twoMovesPawn' pos piece board
     | pColor piece == White && row pos == 2
         = [(col pos, rowAdd pos 2)]
     | pColor piece == Black && row pos == 8

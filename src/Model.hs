@@ -20,6 +20,7 @@ hasColoredP,
 squareAt,
 hasOpponentOn,
 notOccupied,
+vacant,
 pieceAt
 ) where
 
@@ -64,14 +65,19 @@ toIntCol :: Char -> Int
 toIntCol c = fromMaybe 0 $ elemIndex c ['A' .. 'H']
 
 hasColoredP :: Color -> Square -> Bool
-hasColoredP c s = case fmap (\p -> pColor p == c) (snd s) of Just True -> True
-                                                             otherwise -> False
+hasColoredP c s = case fmap (\p -> pColor p == c) (snd s) of
+    Just True -> True
+    otherwise -> False
 
 squareAt :: Position -> Board -> Square
 squareAt pos board = head $ filter (\s -> position s == pos) board
 
 notOccupied :: Color -> Position -> Board -> Bool
 notOccupied color pos board = not $ hasColoredP color $ squareAt pos board
+
+vacant :: Board -> Position -> Bool
+vacant board pos = case fst $ pieceAt pos board of Nothing -> True
+                                                   otherwise -> False
 
 hasOpponentOn :: Color -> Board -> Position -> Bool
 hasOpponentOn myColor board pos = case fmap pColor $ fst $ pieceAt pos board of
