@@ -21,6 +21,8 @@ import Data.Maybe
 import KnightMove
 import PawnMove
 import BishopMove
+import RookMove
+import QueenMove
 
 moves :: Board -> Color -> [Board]
 moves board color = [move (position square) toPos board |
@@ -38,6 +40,8 @@ positionsFrom' position piece board =
     filter insideBoard $ case piece of Piece Knight _ -> knightPosFrom position piece board
                                        Piece Pawn _ -> pawnPosFrom position piece board
                                        Piece Bishop _ -> bishopPosFrom position piece board
+                                       Piece Rook _ -> rookPosFrom position piece board
+                                       Piece Queen _ -> queenPosFrom position piece board
                                        otherwise -> []
 
 isLegal :: Board -> Bool
