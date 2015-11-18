@@ -85,6 +85,12 @@ hasOpponentOn myColor board pos = case fmap pColor $ fst $ pieceAt pos board o
     otherwise -> False
       where opponentColor = invertC myColor
 
-pieceAt :: Position -> Board -> (Maybe Piece, Board)
-pieceAt pos board = (snd $ head $ filter rightsquare board, board)
+pieceAt' :: Position -> Board -> (Maybe Piece, Board)
+pieceAt' pos board = (snd $ head $ filter rightsquare board, board)
     where rightsquare = (==) pos . fst
+
+pieceAt :: Position -> Board -> (Maybe Piece, Board)
+pieceAt pos board
+    | insideBoard pos = (snd $ squareAt pos board ,board)
+    | otherwise = error errorMsg
+        where errorMsg = "should not ask for positions outside board " ++ (show pos)
