@@ -7,11 +7,11 @@ import Model
 bishopPosFrom :: Position -> Piece -> Board -> [Position]
 bishopPosFrom pos piece board = []
 
-glides :: Position -> [Position]
-glides pos = [(colAdd pos x, rowAdd pos y) |
-    x <- [-8 .. 8],
-    y <- [-8 .. 8],
-    abs x == abs y]
+up :: Position -> Position -> Piece -> Board -> [Position]
+up posFrom posTo piece board
+    | vacant board posTo = posTo : up posFrom (nextUp posFrom) piece board
+    | hasOpponentOn (pColor piece) board posTo =  [posTo]
+    | otherwise = []
 
-unHinderedGlides :: Position -> Piece -> Board -> [Position]
-unHinderedGlides pos piece board = glides pos
+nextUp :: Position -> Position
+nextUp pos = (colAdd pos 1, rowAdd pos 1)
