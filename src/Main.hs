@@ -7,6 +7,7 @@ import Move
 --import BishopMove
 import Evaluation
 import Board
+import Engine
 
 
 setup =
@@ -19,14 +20,26 @@ setup =
 
 main :: IO ()
 main = do
-    nicePrint $ last setup
+      putStrLn "Would you like to play a game of chess?"
+      nicePrint initBoard
+      putStrLn "Enter a move FROM like this : ('E',2)"
+      fromString <- getLine
+      putStrLn "Enter a move TO like this : ('E',4)"
+      toString <- getLine
+      let fromPos = read fromString :: Position
+      let toPos = read toString :: Position
+      let newBoard = move fromPos toPos initBoard
+      nicePrint newBoard
+      let repliedBoard = replyToMove Black newBoard
+      nicePrint repliedBoard
+--    nicePrint $ last setup
     --putStr $ fromString $ prettyBoard $ last setup
     --print $ evaluate $ last setup
     --print $ isLegal $ head setup
     -- print $ knightPosFrom ('G',1) (Piece Knight White) initBoard
-    putStrLn ""
-    mapM_ nicePrint $ moves (last setup) White
-    print $ length $ moves (last setup) White
+  --  putStrLn ""
+   -- mapM_ nicePrint $ moves (last setup) White
+   -- print $ length $ moves (last setup) White
     -- print $ hasOpponentOn White (last setup) ('A',3)
     -- print $ bishopPosFrom ('F',1) (Piece Bishop White) $ last setup
---
+
