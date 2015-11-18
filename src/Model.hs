@@ -76,14 +76,15 @@ notOccupied :: Color -> Position -> Board -> Bool
 notOccupied color pos board = not $ hasColoredP color $ squareAt pos board
 
 vacant :: Board -> Position -> Bool
-vacant board pos = case fst $ pieceAt pos board of Nothing -> True
-                                                   otherwise -> False
+vacant board pos = insideBoard pos && case fst $ pieceAt pos board
+    of Nothing -> True
+       otherwise -> False
+
+sameColor :: Piece -> Piece -> Bool
+sameColor first second = pColor first == pColor second
 
 hasOpponentOn :: Color -> Board -> Position -> Bool
-hasOpponentOn myColor board pos = case fmap pColor $ fst $ pieceAt pos board of
-    Just opponentColor -> True
-    otherwise -> False
-      where opponentColor = invertC myColor
+hasOpponentOn myColor board pos = not (vacant board pos) && fmap pColor (fst $ pieceAt pos board) /= Just myColor
 
 pieceAt' :: Position -> Board -> (Maybe Piece, Board)
 pieceAt' pos board = (snd $ head $ filter rightsquare board, board)
@@ -93,4 +94,4 @@ pieceAt :: Position -> Board -> (Maybe Piece, Board)
 pieceAt pos board
     | insideBoard pos = (snd $ squareAt pos board ,board)
     | otherwise = error errorMsg
-        where errorMsg = "should not ask for positions outside board " ++ (show pos)
+        where errorMsg = "should not ask for positions outside board " ++ show pos

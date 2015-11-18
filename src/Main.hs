@@ -8,6 +8,7 @@ import Model
 import Printer
 import Move
 import KnightMove
+import BishopMove
 import Evaluation
 import Board
 
@@ -34,4 +35,6 @@ main = do
     -- print $ knightPosFrom ('G',1) (Piece Knight White) initBoard
     print $ length $ moves (last setup) White
     mapM_ nicePrint $ moves (last setup) White
-
+    print $ hasOpponentOn White (last setup) ('A',3)
+    print $ bishopPosFrom ('F',1) (Piece Bishop White) $ last setup
+--

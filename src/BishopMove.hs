@@ -13,7 +13,7 @@ bishopPosFrom pos piece board = filter insideBoard $
 
 glides :: Position -> Piece -> Board -> (Position -> Position) -> [Position]
 glides posFrom piece board next
-    | insideBoard posFrom && insideBoard (next posFrom) && vacant board (next posFrom)
+    | insideBoard (next posFrom) && vacant board (next posFrom)
         = next posFrom : glides (next posFrom) piece board next
     | insideBoard (next posFrom) && hasOpponentOn (pColor piece) board (next posFrom)
         = [next posFrom]
