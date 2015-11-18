@@ -86,6 +86,6 @@ hasOpponentOn myColor board pos =
 
 pieceAt :: Position -> Board -> (Maybe Piece, Board)
 pieceAt pos board
-    | insideBoard pos = (snd $ squareAt pos board ,board)
+    | insideBoard pos = (snd $ squareAt pos board, board)
     | otherwise = error errorMsg
         where errorMsg = "should not ask for positions outside board " ++ show pos

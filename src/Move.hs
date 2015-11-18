@@ -68,9 +68,6 @@ land piece pos board = before pos board ++ [(pos, piece)] ++ after pos board
 comp :: Position -> Position -> Ordering
 comp a b =  col a `compare` col b `mappend` (row a `compare` row b)
 
-comp' :: Square -> Square -> Ordering
-comp' a b = comp (position a) (position b)
-
 without :: Position -> Board -> Board
 without = land Nothing
 
@@ -80,6 +77,3 @@ move from to board = land (fst $ pieceAt from board) to (without from board)
 moveWithHistory :: Position -> Position -> [Board] -> [Board]
 moveWithHistory from to history = history ++ [newHistory]
     where newHistory = move from to $ last history
-
-sort :: Board -> Board
-sort = sortBy comp'
