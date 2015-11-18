@@ -12,4 +12,4 @@ kingPosFrom pos piece board = filter (\qp -> distance pos qp == 1) $ queenPosFro
 distance ::Position -> Position -> Int
 distance fromPos toPos = max (rowDistance fromPos toPos) (colDistance fromPos toPos)
     where rowDistance f t = row t - row f
-          colDistance f t = ord (col t) - ord (col f)
+          colDistance f t = toIntCol (col t) - toIntCol (col f)

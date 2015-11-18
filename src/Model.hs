@@ -18,6 +18,7 @@ invertC,
 isBlackSquare,
 hasColoredP,
 squareAt,
+toIntCol,
 hasOpponentOn,
 notOccupied,
 vacant,
@@ -65,9 +66,7 @@ toIntCol :: Char -> Int
 toIntCol c = fromMaybe 0 $ elemIndex c ['A' .. 'H']
 
 hasColoredP :: Color -> Square -> Bool
-hasColoredP c s = case fmap (\p -> pColor p == c) (snd s) of
-    Just True -> True
-    otherwise -> False
+hasColoredP color square = (snd square >>= (Just . pColor)) == Just color
 
 squareAt :: Position -> Board -> Square
 squareAt pos board = head $ filter (\s -> position s == pos) board
@@ -76,15 +75,14 @@ notOccupied :: Color -> Position -> Board -> Bool
 notOccupied color pos board = not $ hasColoredP color $ squareAt pos board
 
 vacant :: Board -> Position -> Bool
-vacant board pos = insideBoard pos && case fst $ pieceAt pos board
-    of Nothing -> True
-       otherwise -> False
+vacant board pos = insideBoard pos && isNothing (fst (pieceAt pos board))
 
 sameColor :: Piece -> Piece -> Bool
 sameColor first second = pColor first == pColor second
 
 hasOpponentOn :: Color -> Board -> Position -> Bool
-hasOpponentOn myColor board pos = not (vacant board pos) && fmap pColor (fst $ pieceAt pos board) /= Just myColor
+hasOpponentOn myColor board pos =
+    not (vacant board pos) && fmap pColor (fst $ pieceAt pos board) /= Just myColor
 
 pieceAt' :: Position -> Board -> (Maybe Piece, Board)
 pieceAt' pos board = (snd $ head $ filter rightsquare board, board)

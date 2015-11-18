@@ -2,11 +2,20 @@
 
 module Printer (
 prettyPrint,
-prettyBoard
+prettyBoard,
+nicePrint
 ) where
 
 import Model
 import Data.List
+import Prelude hiding (putStr)
+import Data.ByteString.Char8 (putStr)
+import Data.ByteString.UTF8 (fromString)
+
+nicePrint :: Board -> IO ()
+nicePrint board = do
+    putStr $ fromString $ prettyBoard board
+    putStrLn " "
 
 prettyPrint :: Square -> String
 prettyPrint (p, Nothing)

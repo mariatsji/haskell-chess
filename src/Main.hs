@@ -1,14 +1,10 @@
 module Main where
 
-import Prelude hiding (putStr)
-import Data.ByteString.Char8 (putStr)
-import Data.ByteString.UTF8 (fromString)
-
 import Model
 import Printer
 import Move
-import KnightMove
-import BishopMove
+--import KnightMove
+--import BishopMove
 import Evaluation
 import Board
 
@@ -20,11 +16,6 @@ setup =
     moveWithHistory ('G',1) ('F',3) $ 
     moveWithHistory ('E',7) ('E',5) $ 
     moveWithHistory ('E',2) ('E',4) [initBoard]
-
-nicePrint :: Board -> IO ()
-nicePrint board = do
-    putStr $ fromString $ prettyBoard board
-    putStrLn " "
 
 main :: IO ()
 main = do
