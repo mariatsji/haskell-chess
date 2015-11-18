@@ -82,11 +82,7 @@ sameColor first second = pColor first == pColor second
 
 hasOpponentOn :: Color -> Board -> Position -> Bool
 hasOpponentOn myColor board pos =
-    not (vacant board pos) && fmap pColor (fst $ pieceAt pos board) /= Just myColor
-
-pieceAt' :: Position -> Board -> (Maybe Piece, Board)
-pieceAt' pos board = (snd $ head $ filter rightsquare board, board)
-    where rightsquare = (==) pos . fst
+    fmap pColor (fst $ pieceAt pos board) == Just (invertC myColor)
 
 pieceAt :: Position -> Board -> (Maybe Piece, Board)
 pieceAt pos board
