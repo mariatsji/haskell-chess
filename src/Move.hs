@@ -23,6 +23,7 @@ import PawnMove
 import BishopMove
 import RookMove
 import QueenMove
+import KingMove
 
 moves :: Board -> Color -> [Board]
 moves board color = [move (position square) toPos board |
@@ -42,7 +43,7 @@ positionsFrom' position piece board =
                                        Piece Bishop _ -> bishopPosFrom position piece board
                                        Piece Rook _ -> rookPosFrom position piece board
                                        Piece Queen _ -> queenPosFrom position piece board
-                                       otherwise -> []
+                                       Piece King _ -> kingPosFrom position piece board
 
 isLegal :: Board -> Bool
 isLegal = oneKingEach

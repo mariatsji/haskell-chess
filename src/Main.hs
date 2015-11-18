@@ -33,8 +33,9 @@ main = do
     --print $ evaluate $ last setup
     --print $ isLegal $ head setup
     -- print $ knightPosFrom ('G',1) (Piece Knight White) initBoard
-    print $ length $ moves (last setup) White
+    putStrLn ""
     mapM_ nicePrint $ moves (last setup) White
-    print $ hasOpponentOn White (last setup) ('A',3)
-    print $ bishopPosFrom ('F',1) (Piece Bishop White) $ last setup
+    print $ length $ moves (last setup) White
+    -- print $ hasOpponentOn White (last setup) ('A',3)
+    -- print $ bishopPosFrom ('F',1) (Piece Bishop White) $ last setup
 --
