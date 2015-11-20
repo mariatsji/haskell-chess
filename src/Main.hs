@@ -18,21 +18,27 @@ setup =
     moveWithHistory ('E',7) ('E',5) $ 
     moveWithHistory ('E',2) ('E',4) [initBoard]
 
+repl :: Board -> IO ()
+repl board = do
+    nicePrint board
+    putStrLn "Enter a move FROM like this : ('E',2)"
+    fromString <- getLine
+    putStrLn "Enter a move TO like this : ('E',4)"
+    toString <- getLine
+    let fromPos = read fromString :: Position
+    let toPos = read toString :: Position
+    let newBoard = move fromPos toPos board
+    nicePrint newBoard
+    let repliedBoard = replyToMove Black newBoard
+    repl repliedBoard
+
 main :: IO ()
 main = do
-      putStrLn "Would you like to play a game of chess?"
-      nicePrint initBoard
-      putStrLn "Enter a move FROM like this : ('E',2)"
-      fromString <- getLine
-      putStrLn "Enter a move TO like this : ('E',4)"
-      toString <- getLine
-      let fromPos = read fromString :: Position
-      let toPos = read toString :: Position
-      let newBoard = move fromPos toPos initBoard
-      nicePrint newBoard
-      let repliedBoard = replyToMove Black newBoard
-      nicePrint repliedBoard
---    nicePrint $ last setup
+    putStrLn "Would you like to play a game of chess?"
+    repl initBoard
+
+--main = do
+ --    nicePrint $ last setup
     --putStr $ fromString $ prettyBoard $ last setup
     --print $ evaluate $ last setup
     --print $ isLegal $ head setup
