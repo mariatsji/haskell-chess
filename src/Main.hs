@@ -3,14 +3,15 @@ module Main where
 import Model
 import Printer
 import Move
---import KnightMove
---import BishopMove
 import Evaluation
 import Board
 import Engine
 
 
 setup =
+    moveWithHistory ('A',2) ('A',4) $
+    moveWithHistory ('D',7) ('D',5) $
+    moveWithHistory ('F',1) ('B',5) $
     moveWithHistory ('E',5) ('D',4) $ -- takes
     moveWithHistory ('D',2) ('D',4) $
     moveWithHistory ('B',8) ('C',6) $
@@ -32,20 +33,20 @@ repl board = do
     let repliedBoard = replyToMove Black newBoard
     repl repliedBoard
 
-main :: IO ()
-main = do
-    putStrLn "Would you like to play a game of chess?"
-    repl initBoard
-
+--main :: IO ()
 --main = do
- --    nicePrint $ last setup
+--    putStrLn "Would you like to play a game of chess?"
+--    repl initBoard
+
+main = do
+    nicePrint $ last setup
     --putStr $ fromString $ prettyBoard $ last setup
     --print $ evaluate $ last setup
     --print $ isLegal $ head setup
     -- print $ knightPosFrom ('G',1) (Piece Knight White) initBoard
   --  putStrLn ""
-   -- mapM_ nicePrint $ moves (last setup) White
-   -- print $ length $ moves (last setup) White
+    print $ length $ moves (last setup) Black
+    mapM_ nicePrint $ moves (last setup) Black
     -- print $ hasOpponentOn White (last setup) ('A',3)
     -- print $ bishopPosFrom ('F',1) (Piece Bishop White) $ last setup
 

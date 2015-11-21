@@ -19,8 +19,8 @@ nicePrint board = do
 
 prettyPrint :: Square -> String
 prettyPrint (p, Nothing)
-    | isBlackSquare p =  " "
-    | otherwise = " "
+    | isBlackSquare p =  "   "
+    | otherwise = "   "
 prettyPrint (_, Just (Piece Pawn White)) = "♙"
 prettyPrint (_, Just (Piece Knight White)) = "♘"
 prettyPrint (_, Just (Piece Bishop White)) = "♗"

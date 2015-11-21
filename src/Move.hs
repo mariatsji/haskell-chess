@@ -28,6 +28,7 @@ import KingMove
 moves :: Board -> Color -> [Board]
 moves board color = filter (`isLegal` color) $ unfilteredMoves board color
 
+
 unfilteredMoves :: Board -> Color -> [Board]
 unfilteredMoves board color = [move (position square) toPos board |
     square <- filter (hasColoredP color) board,
