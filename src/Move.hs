@@ -26,10 +26,12 @@ import QueenMove
 import KingMove
 
 moves :: Board -> Color -> [Board]
-moves board color = [move (position square) toPos board |
+moves board color = filter (`isLegal` color) $ unfilteredMoves board color
+
+unfilteredMoves :: Board -> Color -> [Board]
+unfilteredMoves board color = [move (position square) toPos board |
     square <- filter (hasColoredP color) board,
     toPos <- positionsFrom square board,
-    isLegal board,
     notOccupied color toPos board]
 
 positionsFrom :: Square -> Board -> [Position]
@@ -45,12 +47,17 @@ positionsFrom' position piece board =
                                        Piece Queen _ -> queenPosFrom position piece board
                                        Piece King _ -> kingPosFrom position piece board
 
-isLegal :: Board -> Bool
-isLegal = oneKingEach
+isLegal :: Board -> Color -> Bool
+isLegal board myColor = oneKingEach board &&
+    doesNotSurrenderKing board myColor
 
 oneKingEach :: Board -> Bool
 oneKingEach b = not ( null $ findPiece (Piece King White) b) &&
     not (null $ findPiece (Piece King Black) b)
+
+doesNotSurrenderKing :: Board -> Color -> Bool
+doesNotSurrenderKing board myColor = not $ any withoutKing $ unfilteredMoves board $invertC myColor
+    where withoutKing b = not $ oneKingEach b
 
 findPiece :: Piece -> Board -> [Square]
 findPiece piece = filter (`hasPiece` piece)
