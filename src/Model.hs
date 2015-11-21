@@ -12,6 +12,7 @@ row,
 col,
 position,
 insideBoard,
+insideBoardS,
 colAdd,
 rowAdd,
 invertC,
@@ -52,6 +53,9 @@ position = fst
 
 insideBoard :: Position -> Bool
 insideBoard (col,row) = col `elem` ['A' .. 'H'] && row `elem` [1 .. 8]
+
+insideBoardS :: Square -> Bool
+insideBoardS s = insideBoard $ fst s
 
 colAdd :: Position -> Int -> Char
 colAdd pos c = chr (ord (col pos) + c)

@@ -9,7 +9,7 @@ pieceAt,
 move,
 moves,
 moveWithHistory,
-positionsFrom,
+squaresFrom,
 isLegal
 ) where
 
@@ -28,25 +28,24 @@ import KingMove
 moves :: Board -> Color -> [Board]
 moves board color = filter (`isLegal` color) $ unfilteredMoves board color
 
-
 unfilteredMoves :: Board -> Color -> [Board]
-unfilteredMoves board color = [move (position square) toPos board |
+unfilteredMoves board color = [move (position square) (position toSquare) board |
     square <- filter (hasColoredP color) board,
-    toPos <- positionsFrom square board,
-    notOccupied color toPos board]
+    toSquare <- squaresFrom square board,
+    notOccupied color (position toSquare) board]
 
-positionsFrom :: Square -> Board -> [Position]
-positionsFrom (p,mp) b = case mp of Nothing -> []
-                                    Just piece -> positionsFrom' p piece b
+squaresFrom :: Square -> Board -> [Square]
+squaresFrom (p,mp) b = case mp of Nothing -> []
+                                  Just piece -> squaresFrom' p piece b
 
-positionsFrom' :: Position -> Piece -> Board -> [Position]
-positionsFrom' position piece board =
-    filter insideBoard $ case piece of Piece Knight _ -> knightPosFrom position piece board
-                                       Piece Pawn _ -> pawnPosFrom position piece board
-                                       Piece Bishop _ -> bishopPosFrom position piece board
-                                       Piece Rook _ -> rookPosFrom position piece board
-                                       Piece Queen _ -> queenPosFrom position piece board
-                                       Piece King _ -> kingPosFrom position piece board
+squaresFrom' :: Position -> Piece -> Board -> [Square]
+squaresFrom' position piece board =
+    filter insideBoardS $ case piece of Piece Knight _ -> knightSquareFrom position piece board
+                                        Piece Pawn _ -> pawnSquareFrom position piece board
+                                        Piece Bishop _ -> bishopSquareFrom position piece board
+                                        Piece Rook _ -> rookSquareFrom position piece board
+                                        Piece Queen _ -> queenSquareFrom position piece board
+                                        Piece King _ -> kingSquareFrom position piece board
 
 isLegal :: Board -> Color -> Bool
 isLegal board myColor = oneKingEach board &&
