@@ -1,6 +1,5 @@
 module Main where
 
-import Chess
 import Printer
 import Move
 import Evaluation
@@ -19,14 +18,14 @@ setup =
     moveWithHistory ('E',2) ('E',4) [initBoard]
 
 main = do
-    nicePrint $ last setup
-    putStr $ fromString $ prettyBoard $ last setup
-    print $ evaluate $ last setup
-    print $ isLegal $ head setup
-    print $ knightPosFrom ('G',1) (Piece Knight White) initBoard
-    putStrLn ""
-    mapM_ nicePrint $ moves (last setup) White
-    print $ length $ moves (last setup) White
-    print $ hasOpponentOn White (last setup) ('A',3)
-    print $ bishopPosFrom ('F',1) (Piece Bishop White) $ last setup
+      nicePrint $ last setup
+--    putStr $ fromString $ prettyBoard $ last setup
+--    print $ evaluate $ last setup
+--    print $ isLegal $ head setup
+--    print $ knightPosFrom ('G',1) (Piece Knight White) initBoard
+--    putStrLn ""
+--    mapM_ nicePrint $ moves (last setup) White
+--    print $ length $ moves (last setup) White
+--    print $ hasOpponentOn White (last setup) ('A',3)
+--    print $ bishopPosFrom ('F',1) (Piece Bishop White) $ last setup
 

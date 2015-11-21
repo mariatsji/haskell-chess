@@ -17,7 +17,7 @@ executable chess
     ghc-options: -ferror-spans
 
 test-suite test-chess
-    build-depends: QuickCheck -any, base -any, doctest -any
+    build-depends: base, QuickCheck -any, base -any, doctest -any, chess
     type: exitcode-stdio-1.0
     main-is: TestMain.hs
     buildable: True
