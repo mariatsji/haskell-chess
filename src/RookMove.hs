@@ -1,9 +1,13 @@
 module RookMove (
-rookPosFrom
+rookPosFrom,
+rookSquareFrom
 ) where
 
 import Model
 import GlideMove
+
+rookSquareFrom :: Position -> Piece -> Board -> [Square]
+rookSquareFrom pos piece board = (\poz -> (poz, Just piece)) <$> rookPosFrom pos piece board
 
 rookPosFrom :: Position -> Piece -> Board -> [Position]
 rookPosFrom pos piece board = filter insideBoard $

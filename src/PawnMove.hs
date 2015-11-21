@@ -1,8 +1,13 @@
 module PawnMove (
-pawnPosFrom
+pawnPosFrom,
+pawnSquareFrom
 ) where
 
 import Model
+import Control.Applicative
+
+pawnSquareFrom :: Position -> Piece -> Board -> [Square]
+pawnSquareFrom pos piece board = (\poz -> (poz, Just piece)) <$> pawnPosFrom pos piece board
 
 pawnPosFrom :: Position -> Piece -> Board -> [Position]
 pawnPosFrom pos piece board = oneMovePawn pos piece board ++

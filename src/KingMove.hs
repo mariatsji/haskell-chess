@@ -1,10 +1,14 @@
 module KingMove (
-kingPosFrom
+kingPosFrom,
+kingSquareFrom
 ) where
 
 import Data.Char
 import QueenMove
 import Model
+
+kingSquareFrom :: Position -> Piece -> Board -> [Square]
+kingSquareFrom pos piece board = (\poz -> (poz, Just piece)) <$> kingPosFrom pos piece board
 
 kingPosFrom :: Position -> Piece -> Board -> [Position]
 kingPosFrom pos piece board = filter (\qp -> distance pos qp == 1) $ queenPosFrom pos piece board
