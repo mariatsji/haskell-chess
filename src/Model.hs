@@ -17,6 +17,7 @@ colAdd,
 rowAdd,
 invertC,
 isBlackSquare,
+isPromotionSquare,
 hasColoredP,
 squareAt,
 toIntCol,
@@ -83,6 +84,12 @@ vacant board pos = insideBoard pos && isNothing (fst (pieceAt pos board))
 
 sameColor :: Piece -> Piece -> Bool
 sameColor first second = pColor first == pColor second
+
+isPromotionSquare :: Color -> Square -> Bool
+isPromotionSquare c s =
+    c == White && row (position s) == 8 ||
+    c == Black && row (position s) == 1
+
 
 hasOpponentOn :: Color -> Board -> Position -> Bool
 hasOpponentOn myColor board pos =

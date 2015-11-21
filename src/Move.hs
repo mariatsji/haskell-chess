@@ -47,6 +47,7 @@ squaresFrom' position piece board =
                                         Piece Queen _ -> queenSquareFrom position piece board
                                         Piece King _ -> kingSquareFrom position piece board
 
+
 isLegal :: Board -> Color -> Bool
 isLegal board myColor = oneKingEach board &&
     doesNotSurrenderKing board myColor
