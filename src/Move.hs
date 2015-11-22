@@ -8,6 +8,7 @@ position,
 pieceAt,
 move,
 moves,
+unfilteredMoves,
 moveWithHistory,
 squaresFrom,
 isLegal
@@ -29,7 +30,7 @@ moves :: Board -> Color -> [Board]
 moves board color = filter (`isLegal` color) $ unfilteredMoves board color
 
 unfilteredMoves :: Board -> Color -> [Board]
-unfilteredMoves board color = [move (position square) (position toSquare) board |
+unfilteredMoves board color = [moveS square toSquare board |
     square <- filter (hasColoredP color) board,
     toSquare <- squaresFrom square board,
     notOccupied color (position toSquare) board]
@@ -73,14 +74,27 @@ land piece pos board = before pos board ++ [(pos, piece)] ++ after pos board
           isBefore s = comp (position s) pos == LT
           isAfter s = comp (position s) pos == GT
 
+landS :: Maybe Piece -> Square -> Board -> Board
+landS piece square board = before square board ++ [square] ++ after square board
+    where before x = filter isBefore
+          after y = filter isAfter
+          isBefore s = compS s square == LT
+          isAfter s = compS s square == GT
+
 comp :: Position -> Position -> Ordering
 comp a b =  col a `compare` col b `mappend` (row a `compare` row b)
+
+compS :: Square -> Square -> Ordering
+compS a b = comp (fst a) (fst b)
 
 without :: Position -> Board -> Board
 without = land Nothing
 
 move :: Position -> Position -> Board -> Board
 move from to board = land (fst $ pieceAt from board) to (without from board)
+
+moveS :: Square -> Square -> Board -> Board
+moveS from to board = landS (fst $ pieceAt (position from) board) to (without (position from) board)
 
 moveWithHistory :: Position -> Position -> [Board] -> [Board]
 moveWithHistory from to history = history ++ [newHistory]

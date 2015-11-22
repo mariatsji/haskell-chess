@@ -54,8 +54,10 @@ main = do
     -- print $ knightPosFrom ('G',1) (Piece Knight White) initBoard
   --  putStrLn ""
     print $ length $ moves (last setup) White
-    mapM_ nicePrint $ moves (last setup) White
-    print $ pawnSquareFrom ('B',7) (Piece Pawn White) $ last setup
+    mapM_ print $ unfilteredMoves (last setup) White
+    -- mapM_ nicePrint $ moves (last setup) White
+    -- mapM_ print $ squaresFrom (squareAt ('B',7) $ last setup) (last setup)
+    -- print $ pawnSquareFrom ('B',7) (Piece Pawn White) $ last setup
     -- print $ hasOpponentOn White (last setup) ('A',3)
     -- print $ bishopPosFrom ('F',1) (Piece Bishop White) $ last setup
 
