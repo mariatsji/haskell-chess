@@ -6,13 +6,11 @@ pawnSquareFrom
 import Model
 import Control.Applicative
 
--- two bugs : can walk in as a pawn without promoting
--- promoting does not print right piece.. still a pawn!
-
 pawnSquareFrom :: Position -> Piece -> Board -> [Square]
-pawnSquareFrom pos piece board = let movedTo = pawnMoveSquareFrom pos piece board
-    in movedTo
-        ++ promotedAt (pColor piece) movedTo
+pawnSquareFrom pos piece board = let
+    movedTo = filter (not . isPromotionSquare (pColor piece)) $ pawnMoveSquareFrom pos piece board
+    promotedTo = promotedAt (pColor piece) $ pawnMoveSquareFrom pos piece board
+    in movedTo ++ promotedTo
 
 promotedAt :: Color -> [Square] -> [Square]
 promotedAt color squares = [(position s, Just piece) |
