@@ -8,8 +8,10 @@ import Control.Applicative
 
 pawnSquareFrom :: Position -> Piece -> Board -> [Square]
 pawnSquareFrom pos piece board = let
-    movedTo = filter (not . isPromotionSquare (pColor piece)) $ pawnMoveSquareFrom pos piece board
-    promotedTo = promotedAt (pColor piece) $ pawnMoveSquareFrom pos piece board
+    movedTo = filter (not . isPromotionSquare (pColor piece)) $
+        pawnMoveSquareFrom pos piece board
+    promotedTo =
+        promotedAt (pColor piece) $ pawnMoveSquareFrom pos piece board
     in movedTo ++ promotedTo
 
 promotedAt :: Color -> [Square] -> [Square]

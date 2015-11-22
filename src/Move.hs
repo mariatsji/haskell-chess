@@ -8,7 +8,6 @@ position,
 pieceAt,
 move,
 moves,
-unfilteredMoves,
 moveWithHistory,
 squaresFrom,
 isLegal
@@ -27,10 +26,10 @@ import QueenMove
 import KingMove
 
 moves :: Board -> Color -> [Board]
-moves board color = filter (`isLegal` color) $ unfilteredMoves board color
+moves board color = filter (`isLegal` color) $ omniLegalMoves board color
 
-unfilteredMoves :: Board -> Color -> [Board]
-unfilteredMoves board color = [moveS square toSquare board |
+omniLegalMoves :: Board -> Color -> [Board]
+omniLegalMoves board color = [moveS square toSquare board |
     square <- filter (hasColoredP color) board,
     toSquare <- squaresFrom square board,
     notOccupied color (position toSquare) board]
@@ -41,13 +40,13 @@ squaresFrom (p,mp) b = case mp of Nothing -> []
 
 squaresFrom' :: Position -> Piece -> Board -> [Square]
 squaresFrom' position piece board =
-    filter insideBoardS $ case piece of Piece Knight _ -> knightSquareFrom position piece board
-                                        Piece Pawn _ -> pawnSquareFrom position piece board
-                                        Piece Bishop _ -> bishopSquareFrom position piece board
-                                        Piece Rook _ -> rookSquareFrom position piece board
-                                        Piece Queen _ -> queenSquareFrom position piece board
-                                        Piece King _ -> kingSquareFrom position piece board
-
+    filter insideBoardS $
+        case piece of Piece Knight _ -> knightSquareFrom position piece board
+                      Piece Pawn _ -> pawnSquareFrom position piece board
+                      Piece Bishop _ -> bishopSquareFrom position piece board
+                      Piece Rook _ -> rookSquareFrom position piece board
+                      Piece Queen _ -> queenSquareFrom position piece board
+                      Piece King _ -> kingSquareFrom position piece board
 
 isLegal :: Board -> Color -> Bool
 isLegal board myColor = oneKingEach board &&
@@ -58,8 +57,8 @@ oneKingEach b = not ( null $ findPiece (Piece King White) b) &&
     not (null $ findPiece (Piece King Black) b)
 
 doesNotSurrenderKing :: Board -> Color -> Bool
-doesNotSurrenderKing board myColor = not $ any withoutKing $ unfilteredMoves board $invertC myColor
-    where withoutKing b = not $ oneKingEach b
+doesNotSurrenderKing board myColor = all oneKingEach $
+     omniLegalMoves board $invertC myColor
 
 findPiece :: Piece -> Board -> [Square]
 findPiece piece = filter (`hasPiece` piece)
@@ -90,11 +89,15 @@ compS a b = comp (fst a) (fst b)
 without :: Position -> Board -> Board
 without = land Nothing
 
+withoutS :: Square -> Board -> Board
+withoutS = landS Nothing
+
 move :: Position -> Position -> Board -> Board
 move from to board = land (fst $ pieceAt from board) to (without from board)
 
 moveS :: Square -> Square -> Board -> Board
-moveS from to board = landS (fst $ pieceAt (position from) board) to (without (position from) board)
+moveS from to board =
+    landS (fst $ pieceAt (position from) board) to (withoutS from board)
 
 moveWithHistory :: Position -> Position -> [Board] -> [Board]
 moveWithHistory from to history = history ++ [newHistory]
