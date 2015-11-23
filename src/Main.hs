@@ -6,7 +6,7 @@ import Move
 import Evaluation
 import Board
 import Engine
-import PawnMove
+import KingMove
 
 kingMoves =
     land (Just $ Piece King Black)('E',8) $
@@ -49,6 +49,7 @@ repl board = do
 
 main = do
     nicePrint kingMoves
+    nicePrint testBoard
     --putStr $ fromString $ prettyBoard $ last setup
     --print $ evaluate $ last setup
     --print $ isLegal $ head setup
@@ -57,6 +58,12 @@ main = do
     print $ length $ moves kingMoves White
     -- mapM_ print $ unfilteredMoves (last setup) White
     mapM_ nicePrint $ moves kingMoves White
+    print $ length $ moves testBoard Black
+    print $ "isParalyzed: " ++ show (isParalyzed testBoard Black)
+    print $ "isInCheck: " ++ show (isInCheck testBoard Black)
+    print $ "isMated: " ++ show (isMated testBoard Black)
+    -- mapM_ print $ unfilteredMoves (last setup) White
+    -- mapM_ nicePrint $ moves testBoard Black
     -- mapM_ print $ squaresFrom (squareAt ('B',7) $ last setup) (last setup)
     -- print $ pawnSquareFrom ('B',7) (Piece Pawn White) $ last setup
     -- print $ hasOpponentOn White (last setup) ('A',3)

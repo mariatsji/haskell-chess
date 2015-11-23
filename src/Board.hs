@@ -1,7 +1,8 @@
 
 module Board (
 initBoard,
-emptyBoard
+emptyBoard,
+testBoard
 ) where
 
 import Model
@@ -10,6 +11,19 @@ import Move
 emptyBoard :: Board
 emptyBoard = [((col, row), Nothing) | col <- ['A'..'H'], row <- [1..8]]
 
+testBoard = checkmateBoard
+
+checkmateBoard = land (Just $ Piece Rook White)('A',8) stalemateBoard
+
+stalemateBoard =
+            land (Just $ Piece King White)('E',6) $
+            land (Just $ Piece Pawn White)('E',7) $
+            land (Just $ Piece King Black)('E',8) emptyBoard
+
+
+kingBoard =
+            land (Just $ Piece King White)('E',1) $
+            land (Just $ Piece King Black)('E',5) emptyBoard
 
 initBoard = land (Just $ Piece Knight Black)('G',8) $
             land (Just $ Piece Knight Black)('B',8) $
