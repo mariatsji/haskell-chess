@@ -10,11 +10,13 @@ move,
 moves,
 unfilteredMoves,
 moveWithHistory,
+threefoldRepetition,
 squaresFrom,
 isLegal
 ) where
 
 import Model
+import Control.Applicative
 import Data.Monoid
 import Data.List
 import Data.Char
@@ -48,6 +50,13 @@ squaresFrom' position piece board =
                                         Piece Queen _ -> queenSquareFrom position piece board
                                         Piece King _ -> kingSquareFrom position piece board
 
+threefoldRepetition :: [Board] -> Bool
+threefoldRepetition [] = False
+threefoldRepetition (b:bs) = isRepeated (b:bs) b >= 3 ||
+     threefoldRepetition (filter (/=b) (b:bs))
+
+isRepeated :: [Board] -> Board -> Int
+isRepeated boards board = length $ elemIndices board boards
 
 isLegal :: Board -> Color -> Bool
 isLegal board myColor = oneKingEach board &&

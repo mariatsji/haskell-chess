@@ -8,6 +8,9 @@ import Board
 import Engine
 import PawnMove
 
+kingMoves =
+    land (Just $ Piece King Black)('E',8) $
+    land (Just $ Piece King White)('E',1) emptyBoard
 
 setup =
     moveWithHistory ('F',8) ('G',7) $
@@ -31,15 +34,13 @@ repl :: Board -> IO ()
 repl board = do
     nicePrint board
     putStrLn "Enter a move FROM like this : ('E',2)"
-    fromString <- getLine
+    fromPos <- fmap (\s -> read s :: Position) getLine
     putStrLn "Enter a move TO like this : ('E',4)"
-    toString <- getLine
-    let fromPos = read fromString :: Position
-    let toPos = read toString :: Position
+    toPos <- fmap (\s -> read s :: Position) getLine
     let newBoard = move fromPos toPos board
     nicePrint newBoard
     let repliedBoard = replyToMove Black newBoard
-    repl repliedBoard
+    repl $ replyToMove Black newBoard
 
 --main :: IO ()
 --main = do
@@ -47,15 +48,15 @@ repl board = do
 --    repl initBoard
 
 main = do
-    nicePrint $ last setup
+    nicePrint kingMoves
     --putStr $ fromString $ prettyBoard $ last setup
     --print $ evaluate $ last setup
     --print $ isLegal $ head setup
     -- print $ knightPosFrom ('G',1) (Piece Knight White) initBoard
   --  putStrLn ""
-    print $ length $ moves (last setup) White
+    print $ length $ moves kingMoves White
     -- mapM_ print $ unfilteredMoves (last setup) White
-    mapM_ nicePrint $ moves (last setup) White
+    mapM_ nicePrint $ moves kingMoves White
     -- mapM_ print $ squaresFrom (squareAt ('B',7) $ last setup) (last setup)
     -- print $ pawnSquareFrom ('B',7) (Piece Pawn White) $ last setup
     -- print $ hasOpponentOn White (last setup) ('A',3)
