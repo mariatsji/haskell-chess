@@ -11,6 +11,8 @@ moves,
 unfilteredMoves,
 moveWithHistory,
 isParalyzed,
+isInCheck,
+isMated,
 squaresFrom,
 isLegal
 ) where
@@ -53,6 +55,13 @@ squaresFrom' position piece board =
 isParalyzed :: Board -> Color -> Bool
 isParalyzed b c = null $ moves b c
 
+isMated :: Board -> Color -> Bool
+isMated b c = isParalyzed b c && isInCheck b c
+
+isInCheck :: Board -> Color -> Bool
+isInCheck b c = any withoutKing $ unfilteredMoves b $invertC c
+    where withoutKing b = not $ oneKingEach b
+
 isLegal :: Board -> Color -> Bool
 isLegal board myColor = oneKingEach board &&
     doesNotSurrenderKing board myColor
@@ -62,8 +71,7 @@ oneKingEach b = not ( null $ findPiece (Piece King White) b) &&
     not (null $ findPiece (Piece King Black) b)
 
 doesNotSurrenderKing :: Board -> Color -> Bool
-doesNotSurrenderKing board myColor = not $ any withoutKing $ unfilteredMoves board $invertC myColor
-    where withoutKing b = not $ oneKingEach b
+doesNotSurrenderKing board myColor = all oneKingEach $ unfilteredMoves board $invertC myColor
 
 findPiece :: Piece -> Board -> [Square]
 findPiece piece = filter (`hasPiece` piece)

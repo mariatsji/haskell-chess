@@ -54,7 +54,9 @@ main = do
     -- print $ knightPosFrom ('G',1) (Piece Knight White) initBoard
   --  putStrLn ""
     print $ length $ moves testBoard Black
-    mapM_ print $ kingPosFrom ('E',5) (Piece King Black) testBoard
+    print $ "isParalyzed: " ++ show (isParalyzed testBoard Black)
+    print $ "isInCheck: " ++ show (isInCheck testBoard Black)
+    print $ "isMated: " ++ show (isMated testBoard Black)
     -- mapM_ print $ unfilteredMoves (last setup) White
     -- mapM_ nicePrint $ moves testBoard Black
     -- mapM_ print $ squaresFrom (squareAt ('B',7) $ last setup) (last setup)
