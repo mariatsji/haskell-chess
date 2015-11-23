@@ -10,6 +10,7 @@ move,
 moves,
 unfilteredMoves,
 moveWithHistory,
+isParalyzed,
 squaresFrom,
 isLegal
 ) where
@@ -48,6 +49,9 @@ squaresFrom' position piece board =
                                         Piece Queen _ -> queenSquareFrom position piece board
                                         Piece King _ -> kingSquareFrom position piece board
 
+
+isParalyzed :: Board -> Color -> Bool
+isParalyzed b c = null $ moves b c
 
 isLegal :: Board -> Color -> Bool
 isLegal board myColor = oneKingEach board &&

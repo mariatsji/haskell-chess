@@ -6,7 +6,7 @@ import Move
 import Evaluation
 import Board
 import Engine
-import PawnMove
+import KingMove
 
 
 setup =
@@ -47,15 +47,16 @@ repl board = do
 --    repl initBoard
 
 main = do
-    nicePrint $ last setup
+    nicePrint testBoard
     --putStr $ fromString $ prettyBoard $ last setup
     --print $ evaluate $ last setup
     --print $ isLegal $ head setup
     -- print $ knightPosFrom ('G',1) (Piece Knight White) initBoard
   --  putStrLn ""
-    print $ length $ moves (last setup) White
+    print $ length $ moves testBoard Black
+    mapM_ print $ kingPosFrom ('E',5) (Piece King Black) testBoard
     -- mapM_ print $ unfilteredMoves (last setup) White
-    mapM_ nicePrint $ moves (last setup) White
+    -- mapM_ nicePrint $ moves testBoard Black
     -- mapM_ print $ squaresFrom (squareAt ('B',7) $ last setup) (last setup)
     -- print $ pawnSquareFrom ('B',7) (Piece Pawn White) $ last setup
     -- print $ hasOpponentOn White (last setup) ('A',3)
