@@ -47,7 +47,7 @@ main = do
     putStrLn "Would you like to play a game of chess?"
     putStrLn "Type White or Black to play"
     color <- fmap (\s -> read s :: Color) getLine
-    let playBoard = if color == White then initBoard else replyToMove Black initBoard
+    let playBoard = if color == White then initBoard else replyToMove White initBoard
     playRepl playBoard color
 
 --main = do
