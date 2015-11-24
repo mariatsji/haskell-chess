@@ -37,10 +37,17 @@ playRepl board color = do
     fromPos <- fmap (\s -> read s :: Position) getLine
     putStrLn "Enter a move TO like this : ('E',4)"
     toPos <- fmap (\s -> read s :: Position) getLine
-    let newBoard = move fromPos toPos board
-    nicePrint newBoard color
-    let repliedBoard = replyToMove (invertC color) newBoard
-    playRepl (replyToMove (invertC color) newBoard) color
+    let legalMoves = moves board color
+    let tryBoard = move fromPos toPos board
+    let newBoard = if tryBoard `elem` legalMoves then tryBoard else board
+    if tryBoard `elem` legalMoves
+        then
+            do
+                nicePrint newBoard color
+                let repliedBoard = replyToMove (invertC color) newBoard
+                playRepl (replyToMove (invertC color) newBoard) color
+        else
+            playRepl board color
 
 main :: IO ()
 main = do
@@ -50,21 +57,16 @@ main = do
     let playBoard = if color == White then initBoard else replyToMove White initBoard
     playRepl playBoard color
 
---main = do
---    nicePrint kingMoves
---    nicePrint testBoard
-    --putStr $ fromString $ prettyBoard $ last setup
-    --print $ evaluate $ last setup
-    --print $ isLegal $ head setup
-    -- print $ knightPosFrom ('G',1) (Piece Knight White) initBoard
-  --  putStrLn ""
+testMain = do
+    print $ evaluate $ last setup
+    putStrLn ""
 --    print $ length $ moves kingMoves White
-    -- mapM_ print $ unfilteredMoves (last setup) White
+    mapM_ print $ unfilteredMoves (last setup) White
 --    mapM_ nicePrint $ moves kingMoves White
 --    print $ length $ moves testBoard Black
---    print $ "isParalyzed: " ++ show (isParalyzed testBoard Black)
---    print $ "isInCheck: " ++ show (isInCheck testBoard Black)
---    print $ "isMated: " ++ show (isMated testBoard Black)
+    print $ "isParalyzed: " ++ show (isParalyzed testBoard Black)
+    print $ "isInCheck: " ++ show (isInCheck testBoard Black)
+    print $ "isMated: " ++ show (isMated testBoard Black)
     -- mapM_ print $ unfilteredMoves (last setup) White
     -- mapM_ nicePrint $ moves testBoard Black
     -- mapM_ print $ squaresFrom (squareAt ('B',7) $ last setup) (last setup)
