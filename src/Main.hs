@@ -32,13 +32,13 @@ setup =
 
 playRepl :: Board -> Color -> IO ()
 playRepl board color = do
-    nicePrint board
+    nicePrint board color
     putStrLn "Enter a move FROM like this : ('E',2)"
     fromPos <- fmap (\s -> read s :: Position) getLine
     putStrLn "Enter a move TO like this : ('E',4)"
     toPos <- fmap (\s -> read s :: Position) getLine
     let newBoard = move fromPos toPos board
-    nicePrint newBoard
+    nicePrint newBoard color
     let repliedBoard = replyToMove (invertC color) newBoard
     playRepl (replyToMove (invertC color) newBoard) color
 

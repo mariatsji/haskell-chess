@@ -12,9 +12,9 @@ import Prelude
 import qualified Data.ByteString.Char8 as UP
 import qualified Data.ByteString.UTF8 as UF
 
-nicePrint :: Board -> IO ()
-nicePrint board = do
-    UP.putStr $ UF.fromString $ prettyBoard board
+nicePrint :: Board -> Color -> IO ()
+nicePrint board color = do
+    UP.putStr $ UF.fromString $ prettyBoard board color
     putStrLn " "
 
 prettyPrint :: Square -> String
@@ -35,11 +35,11 @@ prettyPrint (_, Just (Piece Queen Black)) = "♛"
 prettyPrint (_, Just (Piece King Black)) = "♚"
 
 
-prettyBoard :: Board -> String
-prettyBoard board =  intercalate "" $ map prettyRow (toRows board)
+prettyBoard :: Board -> Color -> String
+prettyBoard board color =  intercalate "" $ map prettyRow (toRows board color)
 
-toRows :: Board -> [Row]
-toRows board = map (toRow board) $ reverse [1..8]
+toRows :: Board -> Color -> [Row]
+toRows board color = map (toRow board) $ if color == White then reverse [1..8] else [1..8]
 
 toRow :: Board -> Int -> Row
 toRow board r = filter (\s -> snd (fst s) == r) board
