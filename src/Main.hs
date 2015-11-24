@@ -30,8 +30,8 @@ setup =
     moveWithHistory ('E',7) ('E',5) $ 
     moveWithHistory ('E',2) ('E',4) [initBoard]
 
-repl :: Board -> IO ()
-repl board = do
+playRepl :: Board -> Color -> IO ()
+playRepl board color = do
     nicePrint board
     putStrLn "Enter a move FROM like this : ('E',2)"
     fromPos <- fmap (\s -> read s :: Position) getLine
@@ -39,29 +39,32 @@ repl board = do
     toPos <- fmap (\s -> read s :: Position) getLine
     let newBoard = move fromPos toPos board
     nicePrint newBoard
-    let repliedBoard = replyToMove Black newBoard
-    repl $ replyToMove Black newBoard
+    let repliedBoard = replyToMove (invertC color) newBoard
+    playRepl (replyToMove (invertC color) newBoard) color
 
---main :: IO ()
---main = do
---    putStrLn "Would you like to play a game of chess?"
---    repl initBoard
-
+main :: IO ()
 main = do
-    nicePrint kingMoves
-    nicePrint testBoard
+    putStrLn "Would you like to play a game of chess?"
+    putStrLn "Type White or Black to play"
+    color <- fmap (\s -> read s :: Color) getLine
+    let playBoard = if color == White then initBoard else replyToMove Black initBoard
+    playRepl playBoard color
+
+--main = do
+--    nicePrint kingMoves
+--    nicePrint testBoard
     --putStr $ fromString $ prettyBoard $ last setup
     --print $ evaluate $ last setup
     --print $ isLegal $ head setup
     -- print $ knightPosFrom ('G',1) (Piece Knight White) initBoard
   --  putStrLn ""
-    print $ length $ moves kingMoves White
+--    print $ length $ moves kingMoves White
     -- mapM_ print $ unfilteredMoves (last setup) White
-    mapM_ nicePrint $ moves kingMoves White
-    print $ length $ moves testBoard Black
-    print $ "isParalyzed: " ++ show (isParalyzed testBoard Black)
-    print $ "isInCheck: " ++ show (isInCheck testBoard Black)
-    print $ "isMated: " ++ show (isMated testBoard Black)
+--    mapM_ nicePrint $ moves kingMoves White
+--    print $ length $ moves testBoard Black
+--    print $ "isParalyzed: " ++ show (isParalyzed testBoard Black)
+--    print $ "isInCheck: " ++ show (isInCheck testBoard Black)
+--    print $ "isMated: " ++ show (isMated testBoard Black)
     -- mapM_ print $ unfilteredMoves (last setup) White
     -- mapM_ nicePrint $ moves testBoard Black
     -- mapM_ print $ squaresFrom (squareAt ('B',7) $ last setup) (last setup)
