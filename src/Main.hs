@@ -49,13 +49,27 @@ playRepl board color = do
         else
             playRepl board color
 
+computerVsComputer board color = do
+    nicePrint board White
+    let newBoard = replyToMove (invertC color) board
+    putStrLn "ENTER to continue"
+    _ <- getLine
+    nicePrint newBoard White
+    computerVsComputer newBoard (invertC color)
+
 main :: IO ()
 main = do
     putStrLn "Would you like to play a game of chess?"
-    putStrLn "Type White or Black to play"
-    color <- fmap (\s -> read s :: Color) getLine
-    let playBoard = if color == White then initBoard else replyToMove White initBoard
-    playRepl playBoard color
+    putStrLn "Type White,Black or Computer to play"
+    colorString <- getLine
+    if colorString /= "White" && colorString /= "Black"
+        then
+            computerVsComputer initBoard White
+        else
+            do
+                let color = read colorString :: Color
+                let playBoard = if color == White then initBoard else replyToMove White initBoard
+                playRepl playBoard color
 
 testMain = do
     print $ evaluate $ last setup
