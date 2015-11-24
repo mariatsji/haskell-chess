@@ -8,7 +8,10 @@ evaluate :: Board -> (Board, Float)
 evaluate board = (board, weight board)
 
 weight :: Board -> Float
-weight board = sum $ map toValue board
+weight board = material board + pawnAdvanceBonus board
+
+material :: Board -> Float
+material board = sum $ map toValue board
 
 toValue :: Square -> Float
 toValue s = case s of (_, Nothing) -> 0.0
@@ -25,4 +28,10 @@ toValue s = case s of (_, Nothing) -> 0.0
                       (_, Just (Piece Queen Black)) -> -9.0
                       (_, Just (Piece King Black)) -> -50.0
 
+pawnAdvanceBonus :: Board -> Float
+pawnAdvanceBonus board = sum $ map toPawnRowBonus board
 
+toPawnRowBonus :: Square -> Float
+toPawnRowBonus s = case s of (_, Just (Piece Pawn White)) -> realToFrac (row (position s) - 1) * 0.1
+                             (_, Just (Piece Pawn Black)) -> realToFrac (7 - row (position s)) * (-0.1)
+                             otherwise -> 0.0

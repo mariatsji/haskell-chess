@@ -54,7 +54,6 @@ computerVsComputer board color = do
     let newBoard = replyToMove (invertC color) board
     putStrLn "ENTER to continue"
     _ <- getLine
-    nicePrint newBoard White
     computerVsComputer newBoard (invertC color)
 
 main :: IO ()
