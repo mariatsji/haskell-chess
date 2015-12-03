@@ -64,7 +64,7 @@ main = do
     colorString <- getLine
     if colorString /= "White" && colorString /= "Black"
         then
-            computerVsComputer [initBoard] White
+            computerVsComputer [initBoard] Black
         else
             do
                 let color = read colorString :: Color
