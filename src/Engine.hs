@@ -8,11 +8,11 @@ import Evaluation
 import Data.List
 import Control.Applicative
 
-replyToMove :: Color -> Board -> Board
-replyToMove myColor board = fst $ 
+replyToMove :: Color -> [Board] -> [Board]
+replyToMove myColor boards = boards ++ [fst $ 
     head
         $ sortBy (if myColor == White then highestWhiteEval else highestBlackEval)
-            (evaluate <$> moves board myColor)
+            (evaluate <$> moves boards myColor)]
 
 highestWhiteEval :: (Board, Float) -> (Board, Float) -> Ordering
 highestWhiteEval first second = snd first `compare` snd second

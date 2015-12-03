@@ -9,7 +9,6 @@ pieceAt,
 move,
 moves,
 unfilteredMoves,
-moveWithHistory,
 threefoldRepetition,
 isParalyzed,
 isInCheck,
@@ -31,27 +30,31 @@ import RookMove
 import QueenMove
 import KingMove
 
-moves :: Board -> Color -> [Board]
-moves board color = filter (`isLegal` color) $ unfilteredMoves board color
+moves :: [Board] -> Color -> [Board]
+moves boards color =
+    boards ++ filter (`isLegal` color) (unfilteredMoves boards color)
 
-unfilteredMoves :: Board -> Color -> [Board]
-unfilteredMoves board color = [moveS square toSquare board |
+unfilteredMoves :: [Board] -> Color -> [Board]
+unfilteredMoves boards color = [moveS square toSquare board |
     square <- filter (hasColoredP color) board,
-    toSquare <- squaresFrom square board,
+    toSquare <- squaresFrom square boards,
     notOccupied color (position toSquare) board]
+        where board = last boards
 
-squaresFrom :: Square -> Board -> [Square]
+squaresFrom :: Square -> [Board] -> [Square]
 squaresFrom (p,mp) b = case mp of Nothing -> []
-                                  Just piece -> squaresFrom' p piece b
+                                  Just piece -> squaresFromP p piece b
 
-squaresFrom' :: Position -> Piece -> Board -> [Square]
-squaresFrom' position piece board =
-    filter insideBoardS $ case piece of Piece Knight _ -> knightSquareFrom position piece board
-                                        Piece Pawn _ -> pawnSquareFrom position piece board
-                                        Piece Bishop _ -> bishopSquareFrom position piece board
-                                        Piece Rook _ -> rookSquareFrom position piece board
-                                        Piece Queen _ -> queenSquareFrom position piece board
-                                        Piece King _ -> kingSquareFrom position piece board
+squaresFromP :: Position -> Piece -> [Board] -> [Square]
+squaresFromP position piece boards =
+    filter insideBoardS $
+        case piece of Piece Knight _ -> knightSquareFrom position piece board
+                      Piece Pawn _ -> pawnSquareFrom position piece board
+                      Piece Bishop _ -> bishopSquareFrom position piece board
+                      Piece Rook _ -> rookSquareFrom position piece board
+                      Piece Queen _ -> queenSquareFrom position piece board
+                      Piece King _ -> kingSquareFrom position piece board
+      where board = last boards
 
 threefoldRepetition :: [Board] -> Bool
 threefoldRepetition [] = False
@@ -61,13 +64,13 @@ threefoldRepetition (b:bs) = isRepeated (b:bs) b >= 3 ||
 isRepeated :: [Board] -> Board -> Int
 isRepeated boards board = length $ elemIndices board boards
 
-isParalyzed :: Board -> Color -> Bool
+isParalyzed :: [Board] -> Color -> Bool
 isParalyzed b c = null $ moves b c
 
-isMated :: Board -> Color -> Bool
+isMated :: [Board] -> Color -> Bool
 isMated b c = isParalyzed b c && isInCheck b c
 
-isInCheck :: Board -> Color -> Bool
+isInCheck :: [Board] -> Color -> Bool
 isInCheck b c = any withoutKing $ unfilteredMoves b $invertC c
     where withoutKing b = not $ oneKingEach b
 
@@ -80,7 +83,7 @@ oneKingEach b = not ( null $ findPiece (Piece King White) b) &&
     not (null $ findPiece (Piece King Black) b)
 
 doesNotSurrenderKing :: Board -> Color -> Bool
-doesNotSurrenderKing board myColor = all oneKingEach $ unfilteredMoves board $invertC myColor
+doesNotSurrenderKing board myColor = all oneKingEach $ unfilteredMoves [board] $ invertC myColor
 
 findPiece :: Piece -> Board -> [Square]
 findPiece piece = filter (`hasPiece` piece)
@@ -112,11 +115,8 @@ without :: Position -> Board -> Board
 without = land Nothing
 
 move :: Position -> Position -> Board -> Board
-move from to board = land (fst $ pieceAt from board) to (without from board)
+move from to board =
+    land (fst $ pieceAt from board) to (without from board)
 
 moveS :: Square -> Square -> Board -> Board
 moveS from to board = landS (fst $ pieceAt (position from) board) to (without (position from) board)
-
-moveWithHistory :: Position -> Position -> [Board] -> [Board]
-moveWithHistory from to history = history ++ [newHistory]
-    where newHistory = move from to $ last history
