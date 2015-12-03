@@ -32,7 +32,7 @@ import KingMove
 
 moves :: [Board] -> Color -> [Board]
 moves boards color =
-    boards ++ filter (`isLegal` color) (unfilteredMoves boards color)
+    filter (`isLegal` color) (unfilteredMoves boards color)
 
 unfilteredMoves :: [Board] -> Color -> [Board]
 unfilteredMoves boards color = [moveS square toSquare board |
