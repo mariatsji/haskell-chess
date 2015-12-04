@@ -120,3 +120,32 @@ move from to board =
 
 moveS :: Square -> Square -> Board -> Board
 moveS from to board = landS (fst $ pieceAt (position from) board) to (without (position from) board)
+
+castles :: Position -> Piece -> [Board] -> [Board]
+castles pos piece boards = castlesOO pos piece boards
+    -- ++ castlesOOO pos piece boards --todo
+
+castlesOO :: Position -> Piece -> [Board] -> [Board]
+castlesOO pos piece boards = [castlesBoardOO pos piece (last boards) |
+    not $ isInCheck boards $ pColor piece,
+    kingNotMovesThroughCheckOO pos piece boards,
+    kingNotMoved piece boards,
+    rookNotMoved (pColor piece) boards,
+    coastClearOO pos piece (last boards)]
+
+castlesBoardOO :: Position -> Piece -> Board -> Board
+castlesBoardOO pos piece board = board--todo
+
+kingNotMoved :: Piece -> [Board] -> Bool
+kingNotMoved theKing = all (kingInStartPos (pColor theKing))
+    where kingInStartPos color board = fst ( pieceAt pos board) == Just theKing
+          pos = if pColor theKing == White then ('E',1) else ('E',8)
+
+rookNotMoved :: Color -> [Board] -> Bool
+rookNotMoved color boards = True --todo
+
+coastClearOO :: Position -> Piece -> Board -> Bool
+coastClearOO pos piece board = True --todo
+
+kingNotMovesThroughCheckOO :: Position -> Piece -> [Board] -> Bool
+kingNotMovesThroughCheckOO pos piece boards = True --todo

@@ -17,3 +17,4 @@ distance ::Position -> Position -> Int
 distance fromPos toPos = max (rowDistance fromPos toPos) (colDistance fromPos toPos)
     where rowDistance f t = abs (row t - row f)
           colDistance f t = abs (toIntCol (col t) - toIntCol (col f))
+

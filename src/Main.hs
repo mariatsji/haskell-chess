@@ -5,7 +5,7 @@ import Printer
 import Move
 import Evaluation
 import Board
-import Engine
+import RandomEngine
 import KingMove
 
 kingMoves =
@@ -57,8 +57,8 @@ computerVsComputer boards color = do
     _ <- getLine
     computerVsComputer newBoard (invertC color)
 
-main :: IO ()
-main = do
+gameMain :: IO ()
+gameMain = do
     putStrLn "Would you like to play a game of chess?"
     putStrLn "Type White,Black or Computer to play"
     colorString <- getLine
@@ -71,3 +71,5 @@ main = do
                 let playBoard = if color == White then [initBoard] else replyToMove White [initBoard]
                 playRepl playBoard color
 
+main :: IO ()
+main = gameMain
